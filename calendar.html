@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Calendar · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=1"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk on" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+<div class="hero">
+ <p class="eyebrow">Timeline</p>
+ <h1>Calendar</h1>
+ <p class="lede">When each note was added, and how far away the exam is. This is the running record
+ of where I stand.</p>
+ <div class="cal-count" id="countdown"></div>
+</div>
+
+<h2><span class="bar"></span>Months</h2>
+<div class="cal-legend">
+ <span><i style="background:var(--ok)"></i>note added</span>
+ <span><i style="background:var(--accent)"></i>GATE 2027 exam day</span>
+ <span><i style="background:var(--accent-soft);border:1px solid var(--line-strong)"></i>today</span>
+</div>
+<div class="cal-months" id="cal-months"></div>
+
+<h2><span class="bar"></span>What was added, and when</h2>
+<ul class="cal-log" id="cal-log"></ul>
+
+<div class="card" style="margin-top:26px">
+<h3 style="margin-top:0">About the exam dates</h3>
+<p style="margin:0">GATE 2027 is held on <b>6, 7, 13, 14, 20 and 21 February 2027</b> — six exam days
+across three weekends, in forenoon and afternoon sessions (IIT Madras, the organising institute).
+The <b>DA paper's exact day and session have not been published yet</b>, so the countdown runs to the
+first exam day. Check the official site and your admit card for the confirmed slot.</p>
+</div>
+
+<script type="application/json" id="cal-data">{"exam": ["2027-02-06", "2027-02-07", "2027-02-13", "2027-02-14", "2027-02-20", "2027-02-21"], "months": ["2026-10", "2026-11", "2026-12", "2027-01", "2027-02"], "events": [{"d": "2026-10-23", "t": "BFS notes uploaded (4 pages)", "h": "bfs.html"}, {"d": "2026-10-23", "t": "Matrices notes added", "h": "matrices.html"}, {"d": "2026-10-24", "t": "DFS notes uploaded (2 pages)", "h": "dfs.html"}, {"d": "2026-10-26", "t": "DFS solved tree added", "h": "dfs.html"}, {"d": "2026-10-29", "t": "DFS page rewritten and corrected", "h": "dfs.html"}, {"d": "2026-10-29", "t": "BFS vs DFS comparison added", "h": "comparison.html"}, {"d": "2026-11-02", "t": "Two-goal BFS/DFS example photographed (not digitised yet)"}, {"d": "2026-11-03", "t": "Notes site rebuilt \u2014 index, progress, calendar"}]}</script>
+<div id="cal" hidden></div>
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js" defer></script><script src="assets/calendar.js" defer></script></body></html>

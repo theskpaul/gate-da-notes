@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Depth First Search — DFS · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=1"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › DA-110 · AI</p><div class="hero"><span class="badge">DA-110 · AI</span><h1>Depth First Search — DFS</h1></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Depth First Search — DFS · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=1"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › DA-110 · AI</p><div class="hero"><span class="badge">DA-110 · AI</span><h1>Depth First Search — DFS</h1></div>
 <h2><span class="bar"></span>1. What is it?</h2>
 <p>DFS puts children on a <b>stack</b>, so it applies <b>LIFO</b> — the node pushed last is visited first.</p>
 
@@ -21,21 +21,8 @@ Its <em>time</em> is still exponential.</p>
 </ul>
 
 <h2><span class="bar"></span>4. Worked example — Goal = L</h2>
-<pre class="mermaid">graph TD
-  S --> A
-  S --> B
-  S --> C
-  A --> D
-  A --> E
-  B --> G
-  C --> J
-  E --> F
-  G --> H
-  G --> I
-  J --> K
-  J --> L
-  L --> M</pre>
 <p><b>Edges:</b> S→A, S→B, S→C · A→D, A→E · B→G · C→J · E→F · G→H, G→I · J→K, J→L (Goal) · L→M</p>
+<div class="gp" data-graph="g-dfs"><div class="gp-stage"></div><div class="gp-bar"><button class="gp-play" type="button">Play</button><button class="gp-step" type="button">Step</button><button class="gp-reset" type="button">Reset</button><p class="gp-caption"></p></div></div><script type="application/json" id="g-dfs">{"width": 720, "height": 420, "alt": "DFS traversal of the example tree", "nodes": {"S": [360, 30], "A": [170, 105], "B": [360, 105], "C": [555, 105], "D": [85, 190], "E": [175, 190], "F": [175, 275], "G": [360, 190], "H": [315, 275], "I": [405, 275], "J": [555, 190], "K": [500, 275], "L": [615, 275], "M": [615, 360]}, "edges": [["S", "A"], ["S", "B"], ["S", "C"], ["A", "D"], ["A", "E"], ["E", "F"], ["B", "G"], ["G", "H"], ["G", "I"], ["C", "J"], ["J", "K"], ["J", "L"], ["L", "M"]], "steps": [{"v": "S", "t": "visit S \u00b7 push C, B, A"}, {"v": "A", "t": "visit A \u00b7 push E, D"}, {"v": "D", "t": "visit D \u2014 leaf, backtrack"}, {"v": "E", "t": "visit E \u00b7 push F"}, {"v": "F", "t": "visit F \u2014 leaf, backtrack"}, {"v": "B", "t": "visit B \u00b7 push G"}, {"v": "G", "t": "visit G \u00b7 push I, H"}, {"v": "H", "t": "visit H \u2014 leaf"}, {"v": "I", "t": "visit I \u2014 leaf, backtrack"}, {"v": "C", "t": "visit C \u00b7 push J"}, {"v": "J", "t": "visit J \u00b7 push L, K"}, {"v": "K", "t": "visit K \u2014 leaf"}, {"v": "L", "t": "visit L \u2014 GOAL, stop"}]}</script>
 
 <h3>Visited and Stack (as written)</h3>
 <div class="tw"><table><thead><tr><th>Visited</th><th>Stack (cumulative push order)</th></tr></thead><tbody>
@@ -75,7 +62,7 @@ Its <em>time</em> is still exponential.</p>
 <li>Its advantage is <b>space</b> (linear), not time (still exponential).</li>
 <li>Children are pushed in <b>reverse</b> so the leftmost is visited first.</li>
 </ul>
-<h2><span class="bar"></span>Original handwritten pages</h2><p class="sub">Tap a page to open it full size — check the typed version against your writing.</p><div class="gal"><a href="assets/img/dfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-1.jpg" alt="DFS page 1" loading="lazy"><span>DFS page 1</span></a><a href="assets/img/dfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-2.jpg" alt="DFS page 2" loading="lazy"><span>DFS page 2</span></a><a href="assets/img/dfs-tree-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-2.jpg" alt="Solved tree (rewritten)" loading="lazy"><span>Solved tree (rewritten)</span></a><a href="assets/img/dfs-tree-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-1.jpg" alt="Solved tree (first pass)" loading="lazy"><span>Solved tree (first pass)</span></a></div><footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div>
+<h2><span class="bar"></span>Original handwritten pages</h2><p class="sub">Tap a page to open it full size — check the typed version against your writing.</p><div class="gal"><a href="assets/img/dfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-1.jpg" alt="DFS page 1" loading="lazy"><span>DFS page 1</span></a><a href="assets/img/dfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-2.jpg" alt="DFS page 2" loading="lazy"><span>DFS page 2</span></a><a href="assets/img/dfs-tree-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-2.jpg" alt="Solved tree (rewritten)" loading="lazy"><span>Solved tree (rewritten)</span></a><a href="assets/img/dfs-tree-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-1.jpg" alt="Solved tree (first pass)" loading="lazy"><span>Solved tree (first pass)</span></a></div><footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js" defer></script><script src="assets/calendar.js" defer></script>
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});

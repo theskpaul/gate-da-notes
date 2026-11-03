@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Uninformed Search — BFS · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=1"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › DA-110 · AI</p><div class="hero"><span class="badge">DA-110 · AI</span><h1>Uninformed Search — BFS</h1></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Uninformed Search — BFS · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=1"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › DA-110 · AI</p><div class="hero"><span class="badge">DA-110 · AI</span><h1>Uninformed Search — BFS</h1></div>
 <h2><span class="bar"></span>1. What is it?</h2>
 <ul>
 <li><b>Uninformed search</b> — brute force: every path and node is checked, with no heuristic.</li>
@@ -23,21 +23,8 @@ stops when the goal is found.</li>
 </ul>
 
 <h2><span class="bar"></span>4. Example A — tree, S to G</h2>
-<pre class="mermaid">graph TD
-  S --> A
-  S --> B
-  S --> C
-  A --> E
-  A --> F
-  A --> H
-  B --> I
-  B --> J
-  C --> K
-  C --> M
-  I --> G
-  M --> N
-  M --> O</pre>
 <p><b>Edges:</b> S→A, S→B, S→C · A→E, A→F, A→H · B→I, B→J · C→K, C→M · I→G (Goal) · M→N, M→O</p>
+<div class="gp" data-graph="g-bfs"><div class="gp-stage"></div><div class="gp-bar"><button class="gp-play" type="button">Play</button><button class="gp-step" type="button">Step</button><button class="gp-reset" type="button">Reset</button><p class="gp-caption"></p></div></div><script type="application/json" id="g-bfs">{"width": 740, "height": 380, "alt": "BFS traversal of the example tree", "nodes": {"S": [360, 34], "A": [180, 120], "B": [360, 120], "C": [545, 120], "E": [85, 215], "F": [180, 215], "H": [275, 215], "I": [335, 215], "J": [420, 215], "K": [495, 215], "M": [620, 215], "G": [335, 315], "N": [565, 315], "O": [675, 315]}, "edges": [["S", "A"], ["S", "B"], ["S", "C"], ["A", "E"], ["A", "F"], ["A", "H"], ["B", "I"], ["B", "J"], ["C", "K"], ["C", "M"], ["I", "G"], ["M", "N"], ["M", "O"]], "steps": [{"v": "S", "t": "visit S \u00b7 enqueue A, B, C"}, {"v": "A", "t": "visit A \u00b7 enqueue E, F, H"}, {"v": "B", "t": "visit B \u00b7 enqueue I, J"}, {"v": "C", "t": "visit C \u00b7 enqueue K, M"}, {"v": "E", "t": "visit E \u2014 leaf, nothing enqueued"}, {"v": "F", "t": "visit F \u2014 leaf"}, {"v": "H", "t": "visit H \u2014 leaf"}, {"v": "I", "t": "visit I \u00b7 enqueue G  \u2190 goal found"}, {"v": "J", "t": "visit J \u2014 leaf"}, {"v": "K", "t": "visit K \u2014 leaf"}, {"v": "M", "t": "visit M \u00b7 enqueue N, O"}, {"v": "G", "t": "visit G \u2014 GOAL, stop"}]}</script>
 
 <h3>Queue and Visited (as written)</h3>
 <div class="tw"><table><thead><tr><th>Queue (FIFO)</th><th>Visited</th></tr></thead><tbody>
@@ -105,7 +92,7 @@ Visited: A, AB, ABS, ABSC, ABSCG, ABSCGD, <b>ABSCGDE</b> ← goal reached.</p>
 <li>Path is recovered by <b>backtracking</b>, goal to start.</li>
 <li>State your stopping convention — stop when the goal is <em>listed</em> vs <em>visited</em>; the traces differ.</li>
 </ul>
-<h2><span class="bar"></span>Original handwritten pages</h2><p class="sub">Tap a page to open it full size — check the typed version against your writing.</p><div class="gal"><a href="assets/img/bfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-1.jpg" alt="BFS page 1" loading="lazy"><span>BFS page 1</span></a><a href="assets/img/bfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-2.jpg" alt="BFS page 2" loading="lazy"><span>BFS page 2</span></a><a href="assets/img/bfs-3.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-3.jpg" alt="BFS page 3" loading="lazy"><span>BFS page 3</span></a><a href="assets/img/bfs-4.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-4.jpg" alt="BFS page 4" loading="lazy"><span>BFS page 4</span></a></div><footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div>
+<h2><span class="bar"></span>Original handwritten pages</h2><p class="sub">Tap a page to open it full size — check the typed version against your writing.</p><div class="gal"><a href="assets/img/bfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-1.jpg" alt="BFS page 1" loading="lazy"><span>BFS page 1</span></a><a href="assets/img/bfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-2.jpg" alt="BFS page 2" loading="lazy"><span>BFS page 2</span></a><a href="assets/img/bfs-3.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-3.jpg" alt="BFS page 3" loading="lazy"><span>BFS page 3</span></a><a href="assets/img/bfs-4.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-4.jpg" alt="BFS page 4" loading="lazy"><span>BFS page 4</span></a></div><footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js" defer></script><script src="assets/calendar.js" defer></script>
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
