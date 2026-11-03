@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GATE DA — Notes · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>GATE DA — Notes</span></div><h1>GATE DA — Notes</h1><p class="sub">Study notes, digitised · February 2027 attempt</p>
+<div class="card">
+<p style="margin:0">Every topic I've studied, grouped by GATE DA syllabus section. Each page carries the
+digitised note <em>and</em> the original handwritten pages, so the typed version can always be checked
+against what I actually wrote.</p>
+</div>
+
+<h2>Artificial Intelligence</h2>
+<ul class="idx">
+<li><a href="bfs.html">Uninformed Search — BFS</a>
+<span class="m">DA-110 · FIFO queue, complexity, three worked examples, true queue contents</span></li>
+<li><a href="dfs.html">Depth First Search — DFS</a>
+<span class="m">DA-110 · LIFO stack, completeness &amp; optimality, solved tree, true stack contents</span></li>
+<li><a href="comparison.html">BFS vs DFS — same graph, side by side</a>
+<span class="m">DA-110 · one graph, two traversals, different answers</span></li>
+</ul>
+
+<h2>Linear Algebra</h2>
+<ul class="idx">
+<li><a href="matrices.html">Matrices &amp; Determinants</a>
+<span class="m">DA-032 · determinants, inverse, matrix types, rank, echelon form</span></li>
+</ul>
+
+<h2>Not covered yet</h2>
+<ul class="idx">
+<li><span style="color:var(--muted)">Probability &amp; Statistics · Calculus &amp; Optimization ·
+Programming / DSA · DBMS &amp; Warehousing · Machine Learning · General Aptitude</span></li>
+</ul>
+
+<h2>How this site works</h2>
+<p>Static HTML, one page per topic, no login and nothing to install. It reads the same on a phone and a
+desktop. The graphs are drawn with Mermaid; every trace has a plain-text edge list beside it so the
+structure survives even if the diagram doesn't render.</p>
+<footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+</body></html>

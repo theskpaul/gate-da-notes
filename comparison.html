@@ -1,0 +1,65 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFS vs DFS — Comparison · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>BFS vs DFS — Comparison</span></div><h1>BFS vs DFS — Comparison</h1><p class="sub">DA-110 · same graph, two traversals</p>
+<h2>The graph (A to F, undirected)</h2>
+<pre class="mermaid">graph LR
+  A -->|2| B
+  B -->|5| D
+  A -->|4| C
+  A -->|1| E
+  B -->|2| E
+  E -->|3| D
+  C -->|3| E
+  D -->|1| F
+  E --> F</pre>
+<p><b>Edges:</b> A–B 2 · B–D 5 · A–C 4 · A–E 1 · B–E 2 · E–D 3 · C–E 3 · D–F 1 · E–F (no weight written).
+A = Start, F = Goal. <b>Both BFS and DFS ignore the weights</b> — they count edges, not cost.</p>
+
+<h2>Side by side</h2>
+<div class="tw"><table><thead><tr><th></th><th>BFS</th><th>DFS</th></tr></thead><tbody>
+<tr><td>Data structure</td><td>Queue (FIFO)</td><td>Stack (LIFO)</td></tr>
+<tr><td>Visited order</td><td>A, B, C, E, D, F</td><td>A, B, D, E, C, F</td></tr>
+<tr><td>Cumulative push order</td><td>ABCEDF</td><td>AECBEDFEFC</td></tr>
+<tr><td>Path found</td><td>A → E → F</td><td>A → B → D → E → F</td></tr>
+<tr><td>Path length</td><td>2 edges</td><td>4 edges</td></tr>
+<tr><td>Peak structure size</td><td>3</td><td>6</td></tr>
+<tr><td>Structure at goal</td><td>empty</td><td>4 nodes left</td></tr>
+</tbody></table></div>
+
+<h2>BFS trace</h2>
+<p><b>Visited:</b> A, B, C, E, D, F &nbsp;·&nbsp; <b>Path:</b> A → E → F</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Action</th><th>Queue (front → back)</th></tr></thead><tbody>
+<tr><td>0</td><td>enqueue A</td><td>A</td></tr>
+<tr><td>1</td><td>visit A · enqueue B, C, E</td><td>B, C, E</td></tr>
+<tr><td>2</td><td>visit B · enqueue D (E already queued)</td><td>C, E, D</td></tr>
+<tr><td>3</td><td>visit C (nothing new)</td><td>E, D</td></tr>
+<tr><td>4</td><td>visit E · enqueue F</td><td>D, F</td></tr>
+<tr><td>5</td><td>visit D (nothing new)</td><td>F</td></tr>
+<tr><td>6</td><td>visit F → <b>GOAL</b>, stop</td><td>(empty)</td></tr>
+</tbody></table></div>
+
+<h2>DFS trace</h2>
+<p><b>Visited:</b> A, B, D, E, C, F &nbsp;·&nbsp; <b>Path:</b> A → B → D → E → F</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Action</th><th>Stack (bottom → top)</th></tr></thead><tbody>
+<tr><td>0</td><td>push A</td><td>A</td></tr>
+<tr><td>1</td><td>visit A · push E, C, B</td><td>E, C, B</td></tr>
+<tr><td>2</td><td>visit B · push E, D</td><td>E, C, E, D</td></tr>
+<tr><td>3</td><td>visit D · push F, E</td><td>E, C, E, F, E</td></tr>
+<tr><td>4</td><td>visit E · push F, C</td><td>E, C, E, F, F, C</td></tr>
+<tr><td>5</td><td>visit C (nothing new)</td><td>E, C, E, F, F</td></tr>
+<tr><td>6</td><td>visit F → <b>GOAL</b>, stop</td><td>E, C, E, F</td></tr>
+</tbody></table></div>
+
+<h2>What the comparison shows</h2>
+<ul>
+<li><b>Same graph, same start and goal — different answers.</b> BFS returns the 2-edge path A → E → F;
+DFS returns the 4-edge path A → B → D → E → F. That is "DFS is not optimal" in one picture.</li>
+<li><b>Only the data structure differs</b> — FIFO queue vs LIFO stack.</li>
+<li><b>Memory, honestly:</b> in <em>this</em> small graph DFS's stack (peak 6) actually got bigger than BFS's
+queue (peak 3). The usual "DFS uses less memory" advantage shows up on <b>deep</b> trees, not shallow ones.
+Don't over-generalise from this example.</li>
+</ul>
+<h2>Original handwritten pages</h2><p class="sub">Tap any page to open it full size — check the typed version against your own writing.</p><div class="gal"><a href="assets/img/cmp-af.jpg" target="_blank" rel="noopener"><img src="assets/img/cmp-af.jpg" alt="Comparison example (A to F)" loading="lazy"><span>Comparison example (A to F)</span></a></div><footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+</body></html>

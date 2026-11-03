@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Depth First Search — DFS · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>Depth First Search — DFS</span></div><h1>Depth First Search — DFS</h1><p class="sub">DA-110 · Artificial Intelligence · LIFO stack</p>
+<h2>1. What is it?</h2>
+<p><b>Depth First Search</b> puts children on a <b>stack</b>, so it applies <b>LIFO</b> — the node pushed
+last is visited first.</p>
+
+<h2>2. Key definitions</h2>
+<ul>
+<li><b>Stack</b> — the LIFO structure DFS uses.</li>
+<li><b>Backtracking</b> — when a node has no unvisited child, DFS retreats to the most recent node that still has one.</li>
+</ul>
+
+<h2>3. Rules and complexity</h2>
+<ul>
+<li><b>Time:</b> O(b^d) — exponential, same family as BFS.</li>
+<li><b>Space:</b> O(b×d) — <b>linear</b>. This is DFS's real advantage: it stores only the current path plus siblings.</li>
+<li><b>Completeness:</b> DFS is <b>not</b> complete — <b>unlike BFS</b>, which is complete given a finite branching factor.</li>
+<li><b>Optimality:</b> DFS is <b>not</b> optimal — it does not find the shortest path.</li>
+</ul>
+<p class="sub">Powered vs multiplied: BFS is b^d (exponential); the multiplied form b×d is DFS's <em>space</em>.
+DFS's <em>time</em> is still exponential.</p>
+
+<h2>4. Process</h2>
+<ul>
+<li>Put the starting node on the stack.</li>
+<li>When a node is visited, record it and push its children <b>in reverse order</b>.</li>
+<li>A node not yet visited can be re-added even if it is already on the stack.</li>
+<li><b>Insertion order is reversed:</b> for children A, B, C, D (to be visited alphabetically) push D, C, B, A — so A lands on top and is visited first.</li>
+<li>If a node has no child, backtrack to the nearest node with an unvisited child.</li>
+<li>Stop when there is no node left to visit, or the goal is reached.</li>
+</ul>
+
+<h2>5. Worked example — tree, Goal = L</h2>
+<pre class="mermaid">graph TD
+  S --> A
+  S --> B
+  S --> C
+  A --> D
+  A --> E
+  B --> G
+  C --> J
+  E --> F
+  G --> H
+  G --> I
+  J --> K
+  J --> L
+  L --> M</pre>
+<p><b>Edges:</b> S→A, S→B, S→C · A→D, A→E · B→G · C→J · E→F · G→H, G→I · J→K, J→L (Goal) · L→M</p>
+
+<h3>Traces</h3>
+<div class="tw"><table><thead><tr><th>Visited</th><th>Stack (cumulative push order)</th></tr></thead><tbody>
+<tr><td>∅</td><td>S</td></tr>
+<tr><td>S</td><td>SCBA</td></tr>
+<tr><td>SA</td><td>SCBAED</td></tr>
+<tr><td>SAD</td><td>SCBAED</td></tr>
+<tr><td>SADE</td><td>SCBAEDF</td></tr>
+<tr><td>SADEF</td><td>SCBAEDF</td></tr>
+<tr><td>SADEFB</td><td>SCBAEDFG</td></tr>
+<tr><td>SADEFBG</td><td>SCBAEDFGIH</td></tr>
+<tr><td>SADEFBGH</td><td>SCBAEDFGIH</td></tr>
+<tr><td>SADEFBGHI</td><td>SCBAEDFGIHJ</td></tr>
+<tr><td>SADEFBGHIC</td><td>SCBAEDFGIHJLK</td></tr>
+<tr><td>SADEFBGHICJ</td><td>SCBAEDFGIHJLK</td></tr>
+<tr><td>SADEFBGHICJK</td><td>SCBAEDFGIHJLK</td></tr>
+<tr><td>SADEFBGHICJKL</td><td>← Goal Reached</td></tr>
+</tbody></table></div>
+<p><b>Path:</b> S → A → D → E → F → B → G → H → I → C → J → K → L</p>
+
+<h3>True stack contents (behind the scenes)</h3>
+<p class="sub">The cumulative column only grows. This is the actual stack — it shrinks as nodes are popped.
+Bottom on the left, top (next to pop) on the right.</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Action</th><th>Stack (bottom → top)</th></tr></thead><tbody>
+<tr><td>0</td><td>push S</td><td>S</td></tr>
+<tr><td>1</td><td>visit S · push C, B, A</td><td>C, B, A</td></tr>
+<tr><td>2</td><td>visit A · push E, D</td><td>C, B, E, D</td></tr>
+<tr><td>3</td><td>visit D (leaf)</td><td>C, B, E</td></tr>
+<tr><td>4</td><td>visit E · push F</td><td>C, B, F</td></tr>
+<tr><td>5</td><td>visit F (leaf)</td><td>C, B</td></tr>
+<tr><td>6</td><td>visit B · push G</td><td>C, G</td></tr>
+<tr><td>7</td><td>visit G · push I, H</td><td>C, I, H</td></tr>
+<tr><td>8</td><td>visit H (leaf)</td><td>C, I</td></tr>
+<tr><td>9</td><td>visit I (leaf)</td><td>C</td></tr>
+<tr><td>10</td><td>visit C · push J</td><td>J</td></tr>
+<tr><td>11</td><td>visit J · push L, K</td><td>L, K</td></tr>
+<tr><td>12</td><td>visit K (leaf)</td><td>L</td></tr>
+<tr><td>13</td><td>visit L → <b>GOAL</b>, stop</td><td>(empty)</td></tr>
+</tbody></table></div>
+<p>The stack never holds more than 4 nodes and empties at the end — the O(b×d) linear space, made concrete.
+<b>M is never pushed</b>: the search stops the moment L is reached.</p>
+
+<h2>6. GATE-style traps</h2>
+<ul class="trap">
+<li>DFS is <b>neither complete nor optimal</b> — don't confuse the two.</li>
+<li>Its advantage is <b>space</b> (linear), not time (still exponential).</li>
+<li>Children are pushed in <b>reverse</b> so the leftmost is visited first.</li>
+</ul>
+<h2>Original handwritten pages</h2><p class="sub">Tap any page to open it full size — check the typed version against your own writing.</p><div class="gal"><a href="assets/img/dfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-1.jpg" alt="DFS page 1" loading="lazy"><span>DFS page 1</span></a><a href="assets/img/dfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-2.jpg" alt="DFS page 2" loading="lazy"><span>DFS page 2</span></a><a href="assets/img/dfs-tree-2.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-2.jpg" alt="Solved tree (rewritten)" loading="lazy"><span>Solved tree (rewritten)</span></a><a href="assets/img/dfs-tree-1.jpg" target="_blank" rel="noopener"><img src="assets/img/dfs-tree-1.jpg" alt="Solved tree (first pass)" loading="lazy"><span>Solved tree (first pass)</span></a></div><footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+</body></html>

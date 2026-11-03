@@ -1,0 +1,82 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Matrices &amp;amp; Determinants · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>Matrices &amp;amp; Determinants</span></div><h1>Matrices &amp;amp; Determinants</h1><p class="sub">DA-032 · Linear Algebra</p>
+<h2>1. Basics</h2>
+<ul>
+<li>A <b>matrix</b> is an arrangement of numbers in rectangular form; a <b>determinant</b> is a value (a number),
+and exists only for a <b>square</b> matrix. Its value may be real or complex.</li>
+<li><b>Trace</b> tr(A) = Σ aᵢᵢ — the sum of the diagonal elements.</li>
+<li>Positional naming: i = j diagonal; i &gt; j lower-diagonal; i &lt; j upper-diagonal.</li>
+</ul>
+
+<h2>2. Determinants</h2>
+<ul>
+<li>Sign of aᵢⱼ = (−1)^(i+j).</li>
+<li>2×2: <code>|a b; c d| = ad − bc</code></li>
+<li><b>Sarrus' rule</b> (3×3): repeat the first two columns; sum of the three downward products minus the sum
+of the three upward products.</li>
+<li>Determinant of an upper-triangular, lower-triangular, diagonal, scalar or identity matrix = product of the
+diagonal entries.</li>
+<li>Max terms in the full expansion of an n×n determinant = <b>n!</b>.</li>
+</ul>
+
+<h2>3. Singular, invertible, inverse</h2>
+<ul>
+<li><b>Singular</b>: |A| = 0. <b>Non-singular</b>: |A| ≠ 0. <b>Invertible</b>: A⁻¹ exists (needs |A| ≠ 0).</li>
+<li>A⁻¹ = adj A / |A| = (cof A)ᵀ / |A|.</li>
+<li>2×2 shortcut: swap the two diagonal entries, negate the other two, divide by |A|.</li>
+</ul>
+
+<h2>4. Transpose, conjugate, transjugate</h2>
+<ul>
+<li>Aᵀ = [aⱼᵢ] · Ā = [āᵢⱼ] · Aᶿ = (Ā)ᵀ = (Aᵀ)̄</li>
+<li><b>Reversal laws:</b> (ABC)ᵀ = CᵀBᵀAᵀ · (ABC)ᶿ = CᶿBᶿAᶿ · (ABC)⁻¹ = C⁻¹B⁻¹A⁻¹ · (AB)⁻¹ = B⁻¹A⁻¹</li>
+<li>AB defined ⟺ cols(A) = rows(B). A+B defined ⟺ same order. Matrix division: not defined. AB ≠ BA in general.</li>
+<li>If AB = BA = I then A⁻¹ = B and B⁻¹ = A.</li>
+</ul>
+
+<h2>5. Types of matrices</h2>
+<div class="tw"><table><thead><tr><th>Type</th><th>Condition</th></tr></thead><tbody>
+<tr><td>Symmetric</td><td>Aᵀ = A</td></tr>
+<tr><td>Skew-symmetric</td><td>Aᵀ = −A</td></tr>
+<tr><td>Hermitian</td><td>Aᶿ = A</td></tr>
+<tr><td>Skew-Hermitian</td><td>Aᶿ = −A</td></tr>
+<tr><td>Orthogonal</td><td>AAᵀ = I ⇔ A⁻¹ = Aᵀ</td></tr>
+<tr><td>Unitary</td><td>AAᶿ = I ⇔ A⁻¹ = Aᶿ</td></tr>
+<tr><td>Nilpotent</td><td>Aᵏ = 0 for the least positive k</td></tr>
+<tr><td>Idempotent</td><td>A² = A</td></tr>
+<tr><td>Involutory</td><td>A² = I</td></tr>
+</tbody></table></div>
+<p><b>Skew-symmetric:</b> all diagonal entries are 0; Σaᵢⱼ = 0; |A| = 0 for odd order; |A| is a perfect square
+for even order.</p>
+<p><b>Max distinct elements</b> to build a symmetric matrix of order n = n(n+1)/2.</p>
+
+<h2>6. Rank</h2>
+<p>ρ(A) = the order of the largest non-singular sub-matrix.</p>
+<ul>
+<li>ρ(A_{m×n}) ≤ min{m, n}; and 1 ≤ ρ(A) ≤ min{m, n} for a non-null matrix. A null matrix has rank 0.</li>
+<li>ρ(A) = ρ(A⁻¹) = ρ(Aᵀ) = ρ(Aᶿ) = ρ(AAᵀ) = ρ(AAᶿ)</li>
+<li>ρ(AB) ≤ min{ρ(A), ρ(B)} &nbsp;·&nbsp; ρ(A+B) ≤ ρ(A) + ρ(B)</li>
+<li>ρ(A) = n ⟺ A is non-singular.</li>
+</ul>
+
+<h2>7. Elementary operations and echelon form</h2>
+<ul>
+<li>Rᵢ ↔ Rⱼ · Rᵢ → kRᵢ · Rᵢ → Rᵢ − kRⱼ. <b>Rank is unchanged</b> by elementary operations.</li>
+<li>But when evaluating a <b>determinant</b>, only the third operation is allowed.</li>
+<li><b>Echelon form:</b> leading zeros increase down the rows, zero row at the bottom; rank = number of non-zero rows.</li>
+</ul>
+
+<h2>8. GATE-style traps</h2>
+<ul class="trap">
+<li>A determinant exists only for square matrices.</li>
+<li>Elementary operations don't change rank — but only Rᵢ → Rᵢ − kRⱼ is safe for determinants.</li>
+<li>Skew-symmetric of odd order ⟹ |A| = 0, so ρ(A) ≠ n; of even order ⟹ |A| is a perfect square.</li>
+<li>If A is Hermitian, then iA is skew-Hermitian.</li>
+<li>AB ≠ BA in general, and matrix division is undefined.</li>
+</ul>
+<p><a href="assets/linear-algebra-notes.pdf">Full source notes (PDF)</a></p>
+<footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+</body></html>

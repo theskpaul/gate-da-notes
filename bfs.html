@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Uninformed Search — BFS · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>Uninformed Search — BFS</span></div><h1>Uninformed Search — BFS</h1><p class="sub">DA-110 · Artificial Intelligence · FIFO queue</p>
+<h2>1. What is it?</h2>
+<ul>
+<li><b>Uninformed search</b> is a brute-force search: every path and node is checked to reach the goal, with no heuristic.</li>
+<li><b>BFS (Breadth First Search)</b> uses a <b>FIFO queue</b>. A node is visited once, its children are queued,
+and the algorithm stops when the goal is found.</li>
+</ul>
+
+<h2>2. Key definitions</h2>
+<ul>
+<li><b>FIFO</b> — First In First Out; the queue structure BFS uses.</li>
+<li><b>b</b> — branching factor (children per node). <b>d</b> — depth.</li>
+<li><b>Search key</b> — the start node.</li>
+<li><b>Complete algorithm</b> — finds the shortest path when there is no information beyond depth, and the goal exists.</li>
+</ul>
+
+<h2>3. Rules and complexity</h2>
+<ul>
+<li>Time and space: <b>O(b^d)</b> — both exponential. BFS's cost is its <em>space</em>: it stores the whole frontier.</li>
+<li>Processes one level (breadth) at a time.</li>
+<li>Uses no heuristic, so it ignores edge weights.</li>
+<li>A node already queued or visited is not added again.</li>
+<li>On reaching the goal, the path is recovered by <b>backtracking</b>: find which node added the goal to the queue, repeat to the start.</li>
+<li>BFS finds the shortest path in <b>unweighted</b> graphs.</li>
+</ul>
+
+<h2>4. Worked examples</h2>
+
+<h3>Example A — tree, S to G</h3>
+<pre class="mermaid">graph TD
+  S --> A
+  S --> B
+  S --> C
+  A --> E
+  A --> F
+  A --> H
+  B --> I
+  B --> J
+  C --> K
+  C --> M
+  I --> G
+  M --> N
+  M --> O</pre>
+<p><b>Edges:</b> S→A, S→B, S→C · A→E, A→F, A→H · B→I, B→J · C→K, C→M · I→G (Goal) · M→N, M→O</p>
+
+<h3>Queue (cumulative) and Visited</h3>
+<div class="tw"><table><thead><tr><th>Queue (FIFO)</th><th>Visited</th></tr></thead><tbody>
+<tr><td>S</td><td>∅</td></tr>
+<tr><td>S A B C</td><td>S</td></tr>
+<tr><td>S A B C E F H</td><td>S A</td></tr>
+<tr><td>S A B C E F H I J</td><td>S A B</td></tr>
+<tr><td>S A B C E F H I J K M</td><td>S A B C</td></tr>
+<tr><td>S A B C E F H I J K M G</td><td>… E F H I J K M</td></tr>
+<tr><td>S A B C E F H I J K M G N O</td><td>… G</td></tr>
+</tbody></table></div>
+<p>Goal node G <b>visited</b> → the algorithm stops and does not check the remaining nodes.</p>
+
+<h3>True queue contents (behind the scenes)</h3>
+<p class="sub">The cumulative column only grows. This is the actual queue — it shrinks from the front.</p>
+<div class="tw"><table><thead><tr><th>Step</th><th>Action</th><th>Queue (front → back)</th></tr></thead><tbody>
+<tr><td>0</td><td>enqueue S</td><td>S</td></tr>
+<tr><td>1</td><td>visit S · enqueue A, B, C</td><td>A, B, C</td></tr>
+<tr><td>2</td><td>visit A · enqueue E, F, H</td><td>B, C, E, F, H</td></tr>
+<tr><td>3</td><td>visit B · enqueue I, J</td><td>C, E, F, H, I, J</td></tr>
+<tr><td>4</td><td>visit C · enqueue K, M</td><td>E, F, H, I, J, K, M</td></tr>
+<tr><td>5</td><td>visit E (leaf)</td><td>F, H, I, J, K, M</td></tr>
+<tr><td>6</td><td>visit F (leaf)</td><td>H, I, J, K, M</td></tr>
+<tr><td>7</td><td>visit H (leaf)</td><td>I, J, K, M</td></tr>
+<tr><td>8</td><td>visit I · enqueue G</td><td>J, K, M, G</td></tr>
+<tr><td>9</td><td>visit J (leaf)</td><td>K, M, G</td></tr>
+<tr><td>10</td><td>visit K (leaf)</td><td>M, G</td></tr>
+<tr><td>11</td><td>visit M · enqueue N, O</td><td>G, N, O</td></tr>
+<tr><td>12</td><td>visit G → <b>GOAL</b>, stop</td><td>N, O</td></tr>
+</tbody></table></div>
+<p>The queue peaks at 7 and is still holding 2 when the goal is found — that is the O(b^d) space cost in concrete form.</p>
+
+<h3>Example B — weighted graph, route S to G</h3>
+<pre class="mermaid">graph LR
+  S -->|2| A
+  S -->|1| B
+  S -->|5| C
+  A -->|3| D
+  B -->|2| D
+  B -->|4| G
+  C -->|3| G
+  D -->|3| G</pre>
+<p><b>Edges:</b> S–A 2 · S–B 1 · S–C 5 · A–D 3 · B–D 2 · B–G 4 · C–G 3 · D–G 3.
+Path <b>S → B → G</b>, because B is the node that added G first. BFS ignores the weights — it counts edges.</p>
+
+<h3>Example C — graph, A to E</h3>
+<pre class="mermaid">graph LR
+  A --> B
+  A --> S
+  S --> C
+  S --> G
+  C --> D
+  C --> E
+  C --> F
+  G --> F
+  G --> H
+  H --> E</pre>
+<p><b>Edges:</b> A–B, A–S · S–C, S–G · C–D, C–E (Goal), C–F · G–F, G–H · H–E.
+Visited: A, AB, ABS, ABSC, ABSCG, ABSCGD, <b>ABSCGDE</b> ← goal reached.</p>
+
+<h2>5. GATE-style traps</h2>
+<ul class="trap">
+<li>When asked how many nodes get visited from start to goal, the <b>goal node must be counted</b>.</li>
+<li>A node already in the queue or already visited is <b>not added again</b>.</li>
+<li>The path is recovered by <b>backtracking</b> from goal to start, not forward.</li>
+<li>State your stopping convention: stop when the goal is <em>listed</em> (enqueued) vs <em>visited</em> (expanded) — they give different traces.</li>
+</ul>
+<h2>Original handwritten pages</h2><p class="sub">Tap any page to open it full size — check the typed version against your own writing.</p><div class="gal"><a href="assets/img/bfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-1.jpg" alt="BFS page 1" loading="lazy"><span>BFS page 1</span></a><a href="assets/img/bfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-2.jpg" alt="BFS page 2" loading="lazy"><span>BFS page 2</span></a><a href="assets/img/bfs-3.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-3.jpg" alt="BFS page 3" loading="lazy"><span>BFS page 3</span></a><a href="assets/img/bfs-4.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-4.jpg" alt="BFS page 4" loading="lazy"><span>BFS page 4</span></a></div><footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+</body></html>
