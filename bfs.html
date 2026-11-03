@@ -1,32 +1,28 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Uninformed Search — BFS · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="wrap"><div class="top"><a href="index.html">GATE DA — Notes</a><span class="sep">/</span><span>Uninformed Search — BFS</span></div><h1>Uninformed Search — BFS</h1><p class="sub">DA-110 · Artificial Intelligence · FIFO queue</p>
-<h2>1. What is it?</h2>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Uninformed Search — BFS · GATE DA Notes</title><link rel="stylesheet" href="assets/style.css"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › DA-110 · AI</p><div class="hero"><span class="badge">DA-110 · AI</span><h1>Uninformed Search — BFS</h1><p class="lede"></p></div>
+<h2><span class="bar"></span>1. What is it?</h2>
 <ul>
-<li><b>Uninformed search</b> is a brute-force search: every path and node is checked to reach the goal, with no heuristic.</li>
-<li><b>BFS (Breadth First Search)</b> uses a <b>FIFO queue</b>. A node is visited once, its children are queued,
-and the algorithm stops when the goal is found.</li>
+<li><b>Uninformed search</b> — brute force: every path and node is checked, with no heuristic.</li>
+<li><b>BFS</b> uses a <b>FIFO queue</b>. A node is visited once, its children are queued, and the search
+stops when the goal is found.</li>
 </ul>
 
-<h2>2. Key definitions</h2>
+<h2><span class="bar"></span>2. Key definitions</h2>
 <ul>
-<li><b>FIFO</b> — First In First Out; the queue structure BFS uses.</li>
-<li><b>b</b> — branching factor (children per node). <b>d</b> — depth.</li>
-<li><b>Search key</b> — the start node.</li>
-<li><b>Complete algorithm</b> — finds the shortest path when there is no information beyond depth, and the goal exists.</li>
+<li><b>FIFO</b> — First In First Out; the queue BFS uses.</li>
+<li><b>b</b> — branching factor. <b>d</b> — depth. <b>Search key</b> — the start node.</li>
+<li><b>Complete</b> — finds the shortest path when nothing but depth is known, and the goal exists.</li>
 </ul>
 
-<h2>3. Rules and complexity</h2>
+<h2><span class="bar"></span>3. Rules and complexity</h2>
 <ul>
-<li>Time and space: <b>O(b^d)</b> — both exponential. BFS's cost is its <em>space</em>: it stores the whole frontier.</li>
-<li>Processes one level (breadth) at a time.</li>
-<li>Uses no heuristic, so it ignores edge weights.</li>
+<li>Time and space: <b>O(b^d)</b> — both exponential. BFS's real cost is <em>space</em>: it stores the whole frontier.</li>
+<li>Processes one level at a time. No heuristic, so edge weights are ignored.</li>
 <li>A node already queued or visited is not added again.</li>
-<li>On reaching the goal, the path is recovered by <b>backtracking</b>: find which node added the goal to the queue, repeat to the start.</li>
-<li>BFS finds the shortest path in <b>unweighted</b> graphs.</li>
+<li>The path is recovered by <b>backtracking</b>: find which node added the goal, repeat to the start.</li>
+<li>Finds the shortest path in <b>unweighted</b> graphs.</li>
 </ul>
 
-<h2>4. Worked examples</h2>
-
-<h3>Example A — tree, S to G</h3>
+<h2><span class="bar"></span>4. Example A — tree, S to G</h2>
 <pre class="mermaid">graph TD
   S --> A
   S --> B
@@ -43,7 +39,7 @@ and the algorithm stops when the goal is found.</li>
   M --> O</pre>
 <p><b>Edges:</b> S→A, S→B, S→C · A→E, A→F, A→H · B→I, B→J · C→K, C→M · I→G (Goal) · M→N, M→O</p>
 
-<h3>Queue (cumulative) and Visited</h3>
+<h3>Queue and Visited (as written)</h3>
 <div class="tw"><table><thead><tr><th>Queue (FIFO)</th><th>Visited</th></tr></thead><tbody>
 <tr><td>S</td><td>∅</td></tr>
 <tr><td>S A B C</td><td>S</td></tr>
@@ -72,9 +68,9 @@ and the algorithm stops when the goal is found.</li>
 <tr><td>11</td><td>visit M · enqueue N, O</td><td>G, N, O</td></tr>
 <tr><td>12</td><td>visit G → <b>GOAL</b>, stop</td><td>N, O</td></tr>
 </tbody></table></div>
-<p>The queue peaks at 7 and is still holding 2 when the goal is found — that is the O(b^d) space cost in concrete form.</p>
+<p>The queue peaks at 7 and still holds 2 when the goal is found — the O(b^d) space cost, made concrete.</p>
 
-<h3>Example B — weighted graph, route S to G</h3>
+<h2><span class="bar"></span>5. Example B — weighted graph, S to G</h2>
 <pre class="mermaid">graph LR
   S -->|2| A
   S -->|1| B
@@ -85,9 +81,9 @@ and the algorithm stops when the goal is found.</li>
   C -->|3| G
   D -->|3| G</pre>
 <p><b>Edges:</b> S–A 2 · S–B 1 · S–C 5 · A–D 3 · B–D 2 · B–G 4 · C–G 3 · D–G 3.
-Path <b>S → B → G</b>, because B is the node that added G first. BFS ignores the weights — it counts edges.</p>
+Path <b>S → B → G</b> — B is the node that added G first. BFS ignores the weights.</p>
 
-<h3>Example C — graph, A to E</h3>
+<h2><span class="bar"></span>6. Example C — graph, A to E</h2>
 <pre class="mermaid">graph LR
   A --> B
   A --> S
@@ -102,14 +98,14 @@ Path <b>S → B → G</b>, because B is the node that added G first. BFS ignores
 <p><b>Edges:</b> A–B, A–S · S–C, S–G · C–D, C–E (Goal), C–F · G–F, G–H · H–E.
 Visited: A, AB, ABS, ABSC, ABSCG, ABSCGD, <b>ABSCGDE</b> ← goal reached.</p>
 
-<h2>5. GATE-style traps</h2>
+<h2><span class="bar"></span>7. GATE-style traps</h2>
 <ul class="trap">
-<li>When asked how many nodes get visited from start to goal, the <b>goal node must be counted</b>.</li>
-<li>A node already in the queue or already visited is <b>not added again</b>.</li>
-<li>The path is recovered by <b>backtracking</b> from goal to start, not forward.</li>
-<li>State your stopping convention: stop when the goal is <em>listed</em> (enqueued) vs <em>visited</em> (expanded) — they give different traces.</li>
+<li>When asked how many nodes are visited, the <b>goal node must be counted</b>.</li>
+<li>A node already queued or visited is <b>not added again</b>.</li>
+<li>Path is recovered by <b>backtracking</b>, goal to start.</li>
+<li>State your stopping convention — stop when the goal is <em>listed</em> vs <em>visited</em>; the traces differ.</li>
 </ul>
-<h2>Original handwritten pages</h2><p class="sub">Tap any page to open it full size — check the typed version against your own writing.</p><div class="gal"><a href="assets/img/bfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-1.jpg" alt="BFS page 1" loading="lazy"><span>BFS page 1</span></a><a href="assets/img/bfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-2.jpg" alt="BFS page 2" loading="lazy"><span>BFS page 2</span></a><a href="assets/img/bfs-3.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-3.jpg" alt="BFS page 3" loading="lazy"><span>BFS page 3</span></a><a href="assets/img/bfs-4.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-4.jpg" alt="BFS page 4" loading="lazy"><span>BFS page 4</span></a></div><footer>GATE DA study notes · digitised from handwritten pages · <a href="https://github.com/theskpaul/gate-da-notes">source on GitHub</a></footer></div>
+<h2><span class="bar"></span>Original handwritten pages</h2><p class="sub">Tap a page to open it full size — check the typed version against your writing.</p><div class="gal"><a href="assets/img/bfs-1.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-1.jpg" alt="BFS page 1" loading="lazy"><span>BFS page 1</span></a><a href="assets/img/bfs-2.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-2.jpg" alt="BFS page 2" loading="lazy"><span>BFS page 2</span></a><a href="assets/img/bfs-3.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-3.jpg" alt="BFS page 3" loading="lazy"><span>BFS page 3</span></a><a href="assets/img/bfs-4.jpg" target="_blank" rel="noopener"><img src="assets/img/bfs-4.jpg" alt="BFS page 4" loading="lazy"><span>BFS page 4</span></a></div><footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div>
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
