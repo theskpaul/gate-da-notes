@@ -1,0 +1,239 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=2"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
+<h2><span class="bar"></span>1. What it is</h2>
+<p>A singly linked list written from scratch. Each <code>Node</code> holds a value and a pointer to the
+next node; the list itself is just a reference to the head, and the last node points at
+<code>None</code>. Values are data-type agnostic — anything can be stored.</p>
+
+<h2><span class="bar"></span>2. Operations and complexity</h2>
+<div class="tw"><table><thead><tr><th>Operation</th><th>Function</th><th>Time</th><th>Why</th></tr></thead><tbody>
+<tr><td>Prepend</td><td><code>insert(..., append=False)</code></td><td>O(1)</td><td>New node points at the old head</td></tr>
+<tr><td>Append</td><td><code>insert(..., append=True)</code></td><td>O(n)</td><td>Walks to the last node — there is no tail pointer</td></tr>
+<tr><td>Insert at position</td><td><code>insert_at()</code></td><td>O(n)</td><td>Walk to position − 1, then relink</td></tr>
+<tr><td>Delete by value</td><td><code>delete()</code></td><td>O(n)</td><td>Search, then skip over the node</td></tr>
+<tr><td>Length</td><td><code>ll_len()</code></td><td>O(n)</td><td>Counted by traversal, not stored</td></tr>
+<tr><td>Traverse / print</td><td><code>print_list()</code></td><td>O(n)</td><td></td></tr>
+</tbody></table></div>
+
+<h2><span class="bar"></span>3. The code</h2>
+<p class="sub">Python 3.10+ (uses <code>match</code>). <a href="assets/linked_list.py">Download linked_list.py</a></p>
+<pre><code>import sys
+
+
+class Node:
+    def __init__(self, value, node) -&gt; None:
+        self.value = value
+        self.node: Node = node
+
+
+def print_list(head_node: Node | None):
+    while head_node != None:
+        print(head_node.value, end=&quot; -&gt; &quot;)
+        head_node = head_node.node
+    print(&quot;None&quot;)
+
+
+def ll_len(head_node: Node | None) -&gt; int:
+    count: int = 0
+
+    if head_node != None:
+        tmp: Node = head_node
+        while tmp != None:
+            count += 1
+            tmp = tmp.node
+
+    return count
+
+
+def input2(msg=&quot;&quot;, try_again_msg=&quot;&quot;, type=&quot;undefined&quot;):
+    while True:
+        value: str = input(msg)
+        if type == &quot;int&quot;:
+            if value.isdecimal():
+                i_value: int = int(value)
+                return i_value
+            else:
+                print(try_again_msg)
+        elif type == &quot;undefined&quot; or type == &quot;str&quot;:
+            return value
+
+
+def insert(value, head_node: Node | None = None, append: bool = False) -&gt; Node:
+    &quot;&quot;&quot;
+    This insert function&#x27;s job to to insert new nodes at the first or at the
+    last of the linked list. It will return the whole linked list after insertion is done.
+
+    It has thee parameters -
+        1. value = It is the value that going to be stored in the nodes of the Linked List.
+                   It doesn&#x27;t have any fixed data type and default value, so it can be set
+                   to anything and it is datatype agnostic.
+        2. head_node = This parameter takes the current linked list as an input. It have two
+                       datatypes `Node` and `None`. if any previous linked list have not been
+                       given then it will utilise the `None` data type and return a new
+                       Linked List, else it will use the given Linked List.
+        3. append = This is a bool type parameter that sets in which (append or prepend. Here
+                    prepend is the default method) order nodes are going to be inserted
+                    into the Linked List (when a note empty Linked List is proved through)
+                    `head_node`.
+    &quot;&quot;&quot;
+
+    new_node = Node(value, None)
+
+    if head_node != None:
+        match append:
+            case False:  # prepend
+                new_node.node = head_node
+                head_node = new_node
+
+            case True:  # append
+                tmp = head_node
+                while tmp.node != None:
+                    tmp = tmp.node
+                tmp.node = new_node
+
+    else:
+        head_node = new_node
+
+    return head_node
+
+
+def insert_at(value, head_node: Node, position: int):
+    new_node = Node(value, None)
+    count = 1
+    length = ll_len(head_node)
+    tmp = head_node
+
+    if length == 0:
+        print(&quot;Linked List is Empty!&quot;)
+        print(
+            f&quot;So, the input going to be inserted as the first node, not at the position {position}&quot;
+        )
+        return insert(value=value)
+    else:
+        while position &lt;= 0 or position &gt; length + 1:
+            print(
+                &quot;Position can not be lesser than 0 or greater than the Linked List +1 length.&quot;
+            )
+            position = input2(
+                &quot;Enter positon: &quot;,
+                try_again_msg=&quot;Position must be a decimal&quot;,
+                type=&quot;int&quot;,
+            )
+
+        if position == 1:
+            head_node = insert(value=value, head_node=head_node, append=False)
+            return head_node
+        elif position == length + 1:
+            head_node = insert(value=value, head_node=head_node, append=True)
+            return head_node
+
+        while tmp.node != None:
+            if count == position - 1:
+                new_node.node = tmp.node
+                tmp.node = new_node
+                break
+
+            else:
+                tmp = tmp.node
+                count += 1
+
+    return head_node
+
+
+def delete(value, head_node: Node):
+    if head_node != None:
+        curr = head_node
+
+        if head_node.value == value:
+            tmp = head_node
+            head_node = head_node.node
+            del tmp
+
+            return head_node
+
+        while curr.node != None:
+            if curr.node.value == value:
+                tmp = curr.node
+                curr.node = curr.node.node
+                del tmp
+                break
+            else:
+                curr = curr.node
+        else:
+            print(f&quot;Value: {value} not found!&quot;)
+    else:
+        print(&quot;Linked List is empty!&quot;)
+
+    return head_node
+
+
+def insert_method() -&gt; bool:
+    while True:
+        print(&quot;Pick a method:&quot;)
+        print(&quot;\t1. Prepend\t2. Append&quot;)
+        order_method = input2(
+            &quot;..&gt; &quot;, try_again_msg=&quot;Input must be a decimal&quot;, type=&quot;int&quot;
+        )
+
+        match order_method:
+            case 1:
+                return False
+            case 2:
+                return True
+            case _:
+                print(&quot;Select a correct option [1 or 2].&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    print(&quot;Linked List:&quot;)
+    value = input2(&quot;Enter a value: &quot;)
+    sn: Node = insert(value=value)
+
+    method: bool = insert_method()
+
+    while True:
+        print_list(head_node=sn)
+        print(f&quot;Length: {ll_len(head_node=sn)}&quot;)
+
+        print(&quot;Select-&quot;)
+        print(&quot;\t1. Insert\n\t2. Insert at\n\t3. Delete\n\t4. Stop&quot;)
+        option = input2(&quot;..&gt; &quot;, try_again_msg=&quot;Input must be a decimal&quot;, type=&quot;int&quot;)
+
+        match option:
+            case 1:
+                value = input2(&quot;Enter a value: &quot;)
+                sn = insert(value=value, head_node=sn, append=method)
+            case 2:
+                value = input2(&quot;Enter a value: &quot;)
+                inset_pos: int = input2(
+                    &quot;Enter positon: &quot;,
+                    try_again_msg=&quot;Position must be a decimal&quot;,
+                    type=&quot;int&quot;,
+                )
+                sn = insert_at(value=value, head_node=sn, position=inset_pos)
+            case 3:
+                value = input2(
+                    &quot;Enter the value: &quot;,
+                    try_again_msg=&quot;Enter a value which you want to remove&quot;,
+                )
+                sn = delete(value=value, head_node=sn)
+            case 4:
+                sys.exit()
+            case _:
+                print(&quot;Select a correct option [1,2,3 or 4].&quot;)
+</code></pre>
+
+<h2><span class="bar"></span>4. Notes on the implementation</h2>
+<ul>
+<li><b>Prepend is O(1), append is O(n).</b> With no tail pointer, appending must walk the whole list.
+Keeping a <code>tail</code> reference would make it O(1) — a standard exam trade-off.</li>
+<li><b>Deleting the head is a special case.</b> The head reference itself has to be reassigned, which is
+why <code>delete()</code> returns the (possibly new) head instead of mutating in place.</li>
+<li><b>Deleting the only node</b> returns <code>None</code>; the next insert rebuilds the list from empty.</li>
+<li><b><code>input2()</code> guards integer prompts</b> with <code>str.isdecimal()</code> — so a stray letter
+re-prompts instead of crashing. Note that it also rejects negatives, since <code>"-5".isdecimal()</code> is
+<code>False</code>.</li>
+<li><b>The <code>while … else</code> in <code>delete()</code></b> prints "not found" only when the loop
+finishes without <code>break</code> — correct here, but easy to misread as a bug.</li>
+</ul>
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js" defer></script><script src="assets/calendar.js" defer></script>
+</body></html>
