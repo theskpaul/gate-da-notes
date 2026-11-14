@@ -359,3 +359,8 @@ html.snap #below{scroll-snap-align:start}
   .nav .lnk{font-size:.71rem}
   .brand{font-size:.82rem}
 }
+
+/* ---------- banner belongs to the index view, not the landing ---------- */
+.ubar.ubar-hidden{display:none}
+.landing{min-height:calc(100vh - 58px)}
+@supports (min-height:100dvh){.landing{min-height:calc(100dvh - 58px)}}
