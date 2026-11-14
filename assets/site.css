@@ -227,3 +227,23 @@ footer a:hover{color:var(--accent)}
 
 :root{--gp-on-accent:#ffffff}
 @media (prefers-color-scheme:dark){:root{--gp-on-accent:#14161a}}
+
+/* ---------- urgency banner ---------- */
+.ubar{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;
+  padding:8px 14px;font-size:.8rem;font-weight:600;letter-spacing:.015em;
+  background:var(--accent-soft);color:var(--accent-ink);border-bottom:1px solid var(--line)}
+.ubar b{font-variant-numeric:tabular-nums;font-weight:700}
+.ubar .u{opacity:.5;font-weight:400}
+html[data-tier="60"] .ubar{background:#f6e8cf;color:#8a5a12}
+html[data-tier="30"] .ubar{background:#f8dcc0;color:#95470a}
+html[data-tier="14"] .ubar{background:#f7cfc3;color:#9e2a12}
+html[data-tier="7"]  .ubar{background:#f2bbaf;color:#8d1a0a}
+@media (prefers-color-scheme:dark){
+  html[data-tier="60"] .ubar{background:#2a2115;color:#f0b860}
+  html[data-tier="30"] .ubar{background:#2f2113;color:#ffa04d}
+  html[data-tier="14"] .ubar{background:#341a16;color:#ff8a6b}
+  html[data-tier="7"]  .ubar{background:#3b1512;color:#ff6f5e}
+}
+.momentum{display:flex;gap:11px;flex-wrap:wrap;margin:16px 0 0}
+.momentum .stat b{font-size:1.2rem}
+@media(max-width:560px){ .ubar{font-size:.74rem;gap:9px;padding:7px 10px} }
