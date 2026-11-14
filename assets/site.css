@@ -364,3 +364,11 @@ html.snap #below{scroll-snap-align:start}
 .ubar.ubar-hidden{display:none}
 .landing{min-height:calc(100vh - 58px)}
 @supports (min-height:100dvh){.landing{min-height:calc(100dvh - 58px)}}
+
+/* ---------- player captions + arrows: readable ---------- */
+.lp-caption,.stk-caption{margin:0 0 14px;padding-left:12px;border-left:3px solid var(--accent);
+  font-size:.93rem;font-weight:600;line-height:1.5;color:var(--fg);
+  min-height:1.5em;min-width:0;flex:none}
+.lp-arrow{color:var(--fg-soft);font-size:1.05rem;font-weight:700;line-height:1}
+.lp-none{color:var(--fg-soft);font-weight:600}
+.stk-top{color:var(--accent-ink);font-weight:800}
