@@ -346,3 +346,16 @@ html[data-tier="7"]  .ubar{background:#f2bbaf;color:#8d1a0a}
   .scroll-hint{position:static;transform:none;margin:20px auto 0;animation:none}
   @keyframes bob{0%,100%{transform:none}}
 }
+
+/* ---------- full-screen page flip between the landing and the notes ---------- */
+html.snap{scroll-snap-type:y proximity;scroll-behavior:smooth}
+html.snap .landing{scroll-snap-align:start;scroll-snap-stop:always}
+html.snap #below{scroll-snap-align:start}
+@media(prefers-reduced-motion:reduce){
+  html.snap{scroll-snap-type:none;scroll-behavior:auto}
+}
+@media(max-width:480px){
+  .nav .in{gap:7px;padding:9px 10px}
+  .nav .lnk{font-size:.71rem}
+  .brand{font-size:.82rem}
+}
