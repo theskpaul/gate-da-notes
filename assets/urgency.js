@@ -66,7 +66,7 @@
     '<span class="u">·</span>' +
     "<span>finish by <b>" + finishLabel + "</b></span>" +
     '<span class="u">·</span>' +
-    "<span>need <b>" + perWeek.toFixed(1) + "</b>/week</span>";
+    "<span>need <b>" + perWeek.toFixed(1) + "</b>/wk (<b>" + perDay.toFixed(1) + "</b>/day)</span>";
   document.body.insertBefore(banner, document.body.firstChild);
   clockEl = banner.querySelector(".clock");
   }
