@@ -10,7 +10,7 @@ stops when the goal is found.</li>
 <ul>
 <li><b>FIFO</b> — First In First Out; the queue BFS uses.</li>
 <li><b>b</b> — branching factor. <b>d</b> — depth. <b>Search key</b> — the start node.</li>
-<li><b>Complete</b> — finds the shortest path when nothing but depth is known, and the goal exists.</li>
+<li><b>Complete</b> — finds a goal if one exists (given a finite branching factor). <b>Optimal</b> on unweighted graphs — the first path found is the shortest.</li>
 </ul>
 
 <h2><span class="bar"></span>3. Rules and complexity</h2>
@@ -59,29 +59,29 @@ stops when the goal is found.</li>
 
 <h2><span class="bar"></span>5. Example B — weighted graph, S to G</h2>
 <pre class="mermaid">graph LR
-  S -->|2| A
-  S -->|1| B
-  S -->|5| C
-  A -->|3| D
-  B -->|2| D
-  B -->|4| G
-  C -->|3| G
-  D -->|3| G</pre>
+  S ---|2| A
+  S ---|1| B
+  S ---|5| C
+  A ---|3| D
+  B ---|2| D
+  B ---|4| G
+  C ---|3| G
+  D ---|3| G</pre>
 <p><b>Edges:</b> S–A 2 · S–B 1 · S–C 5 · A–D 3 · B–D 2 · B–G 4 · C–G 3 · D–G 3.
 Path <b>S → B → G</b> — B is the node that added G first. BFS ignores the weights.</p>
 
 <h2><span class="bar"></span>6. Example C — graph, A to E</h2>
 <pre class="mermaid">graph LR
-  A --> B
-  A --> S
-  S --> C
-  S --> G
-  C --> D
-  C --> E
-  C --> F
-  G --> F
-  G --> H
-  H --> E</pre>
+  A --- B
+  A --- S
+  S --- C
+  S --- G
+  C --- D
+  C --- E
+  C --- F
+  G --- F
+  G --- H
+  H --- E</pre>
 <p><b>Edges:</b> A–B, A–S · S–C, S–G · C–D, C–E (Goal), C–F · G–F, G–H · H–E.
 Visited: A, AB, ABS, ABSC, ABSCG, ABSCGD, <b>ABSCGDE</b> ← goal reached.</p>
 

@@ -49,7 +49,7 @@ for even order. Max distinct elements for a symmetric matrix of order n = n(n+1)
 <p>ρ(A) = order of the largest non-singular sub-matrix.</p>
 <ul>
 <li>ρ(A_{m×n}) ≤ min{m, n}. A null matrix has rank 0.</li>
-<li>ρ(A) = ρ(A⁻¹) = ρ(Aᵀ) = ρ(Aᶿ) = ρ(AAᵀ) = ρ(AAᶿ)</li>
+<li>ρ(A) = ρ(Aᵀ) = ρ(Aᶿ) = ρ(AAᶿ) — always. ρ(A) = ρ(A⁻¹) needs A <b>invertible</b>; ρ(A) = ρ(AAᵀ) holds for <b>real</b> A only (complex counter-example: A = [1 i] gives AAᵀ = [0]).</li>
 <li>ρ(AB) ≤ min{ρ(A), ρ(B)} · ρ(A+B) ≤ ρ(A) + ρ(B)</li>
 <li>ρ(A) = n ⟺ A is non-singular.</li>
 </ul>
@@ -57,22 +57,18 @@ for even order. Max distinct elements for a symmetric matrix of order n = n(n+1)
 <h2><span class="bar"></span>7. Elementary operations &amp; echelon form</h2>
 <ul>
 <li>Rᵢ ↔ Rⱼ · Rᵢ → kRᵢ · Rᵢ → Rᵢ − kRⱼ. <b>Rank is unchanged</b>.</li>
-<li>But when evaluating a <b>determinant</b>, only the third operation is allowed.</li>
+<li>For a <b>determinant</b>: Rᵢ → Rᵢ − kRⱼ leaves it unchanged; Rᵢ ↔ Rⱼ multiplies it by −1; Rᵢ → kRᵢ multiplies it by k. Use the last two only if you track the factor.</li>
 <li><b>Echelon form:</b> leading zeros increase down the rows, zero row at the bottom; rank = non-zero rows.</li>
 </ul>
 
 <h2><span class="bar"></span>8. GATE-style traps</h2>
 <ul class="trap">
 <li>A determinant exists only for square matrices.</li>
-<li>Elementary operations don't change rank — but only Rᵢ → Rᵢ − kRⱼ is safe for determinants.</li>
+<li>Elementary operations don't change rank — but only Rᵢ → Rᵢ − kRⱼ leaves the determinant unchanged (swap: ×(−1), scaling: ×k).</li>
 <li>Skew-symmetric of odd order ⟹ |A| = 0; even order ⟹ |A| is a perfect square.</li>
 <li>If A is Hermitian, then iA is skew-Hermitian.</li>
 <li>AB ≠ BA in general, and matrix division is undefined.</li>
 </ul>
 <p><a href="assets/linear-algebra-notes.pdf">Full source notes (PDF)</a></p>
 <footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js" defer></script><script src="assets/calendar.js" defer></script>
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
-</script>
 </body></html>
