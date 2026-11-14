@@ -31,16 +31,37 @@
   }
 
   /* ---- top banner, on every page ---- */
+  var TARGET = new Date("2027-02-06T00:00:00+05:30");   /* IST, exam window opens */
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   var banner = document.createElement("div");
   banner.className = "ubar";
   banner.setAttribute("role", "status");
   banner.innerHTML =
-    "<span><b>" + days + "</b> days left</span>" +
+    '<span><b class="clock" data-out="clock">—</b> left</span>' +
     '<span class="u">·</span>' +
     "<span><b>" + left + "</b> topics untouched</span>" +
     '<span class="u">·</span>' +
     "<span>need <b>" + perDay.toFixed(1) + "</b>/day</span>";
   document.body.insertBefore(banner, document.body.firstChild);
+
+  /* ---- the ticking clock ---- */
+  var clockEl = banner.querySelector(".clock");
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function tick() {
+    var diff = TARGET - new Date();
+    if (diff < 0) diff = 0;
+    var d = Math.floor(diff / DAY);
+    var h = Math.floor(diff / 3600000) % 24;
+    var m = Math.floor(diff / 60000) % 60;
+    var sec = Math.floor(diff / 1000) % 60;
+    var txt = d + "d " + pad2(h) + ":" + pad2(m) + (reduce ? "" : ":" + pad2(sec));
+    clockEl.textContent = txt;
+    clockEl.setAttribute("datetime", TARGET.toISOString());
+    out("clock", txt);
+  }
+  tick();
+  setInterval(tick, reduce ? 30000 : 1000);
 
   out("days", days);
   out("left", left);
