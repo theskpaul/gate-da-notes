@@ -260,3 +260,24 @@ html[data-tier="7"]  .ubar{background:#f2bbaf;color:#8d1a0a}
   .nav .lnk{font-size:.76rem}
 }
 @media(max-width:600px){ .nav a[href*="github.com"]{display:none} }
+
+/* ---------- linked-list animation ---------- */
+.lp{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);
+  padding:16px;margin:16px 0;box-shadow:var(--shadow-sm)}
+.lp-stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:52px;padding:4px 0}
+.lp-head{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);margin-right:-4px}
+.lp-node{display:inline-grid;place-items:center;min-width:44px;height:44px;padding:0 10px;
+  border:2px solid var(--line-strong);border-radius:9px;background:var(--bg-soft);
+  font-weight:700;font-variant-numeric:tabular-nums;
+  transition:background .25s ease,border-color .25s ease,transform .25s ease}
+.lp-node.lp-hi{background:var(--accent);border-color:var(--accent-ink);color:var(--gp-on-accent);
+  transform:scale(1.06)}
+.lp-arrow{color:var(--muted);font-size:1rem}
+.lp-none{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85rem;
+  color:var(--muted);padding:0 6px}
+.lp-bar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:13px}
+.lp-bar button{font:inherit;font-size:.82rem;font-weight:650;padding:7px 15px;border-radius:99px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);cursor:pointer}
+.lp-bar button:hover{background:var(--accent-soft);border-color:var(--accent)}
+.lp-caption{margin:0;font-size:.85rem;color:var(--muted);flex:1;min-width:200px}

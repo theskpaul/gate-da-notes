@@ -7,6 +7,9 @@
   var START = (cfg && cfg.dataset.start) || "2026-10-23";
   var TOTAL = (cfg && parseInt(cfg.dataset.total, 10)) || 105;
   var COVERED = (cfg && parseInt(cfg.dataset.covered, 10)) || 3;
+  /* Syllabus finish line, leaving a revision buffer before the exam window.
+     Exam opens 6 Feb 2027; finish by 9 Jan 2027 = 28-day buffer. */
+  var FINISH = (cfg && cfg.dataset.finish) || "2027-01-09";
 
   var exam = new Date(EXAM + "T00:00:00");
   var start = new Date(START + "T00:00:00");
@@ -14,14 +17,18 @@
   var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   var DAY = 86400000;
+  var finish = new Date(FINISH + "T00:00:00+05:30");
   var days = Math.max(0, Math.round((exam - today) / DAY));
   var left = Math.max(0, TOTAL - COVERED);
-  var weeks = days / 7;
+  /* pace is measured to the finish line, not the exam — the gap is the buffer */
+  var finishDays = Math.max(0, Math.round((finish - today) / DAY));
+  var weeks = finishDays / 7;
   var perWeek = weeks > 0 ? left / weeks : 0;
-  var perDay = days > 0 ? left / days : 0;
+  var perDay = finishDays > 0 ? left / finishDays : 0;
+  var bufferDays = Math.max(0, days - finishDays);
 
   var elapsed = Math.max(1, Math.round((today - start) / DAY));
-  var spanDays = Math.max(1, Math.round((exam - start) / DAY));
+  var spanDays = Math.max(1, Math.round((finish - start) / DAY));   /* plan to the finish line */
   var expected = TOTAL * (elapsed / spanDays);
   var behind = Math.max(0, Math.round(expected - COVERED));
   var actualPerWeek = COVERED / (elapsed / 7);
@@ -35,6 +42,13 @@
     for (var i = 0; i < n.length; i++) n[i].textContent = v;
   }
 
+  var MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var fp = FINISH.split("-");
+  var finishLabel = parseInt(fp[2], 10) + " " + MN[parseInt(fp[1], 10) - 1];
+  out("finish", finishLabel);
+  out("finishdays", finishDays);
+  out("buffer", bufferDays);
+
   /* ---- top banner, on every page ---- */
   var TARGET = new Date("2027-02-06T00:00:00+05:30");   /* IST, exam window opens */
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -47,7 +61,9 @@
     '<span class="u">·</span>' +
     "<span><b>" + left + "</b> topics untouched</span>" +
     '<span class="u">·</span>' +
-    "<span>need <b>" + perDay.toFixed(1) + "</b>/day</span>";
+    "<span>finish by <b>" + finishLabel + "</b></span>" +
+    '<span class="u">·</span>' +
+    "<span>need <b>" + perWeek.toFixed(1) + "</b>/week</span>";
   document.body.insertBefore(banner, document.body.firstChild);
 
   /* ---- the ticking clock ---- */

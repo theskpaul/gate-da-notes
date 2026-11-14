@@ -1,10 +1,24 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=5"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=6"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
 <h2><span class="bar"></span>1. What it is</h2>
 <p>A singly linked list written from scratch. Each <code>Node</code> holds a value and a pointer to the
 next node; the list itself is just a reference to the head, and the last node points at
 <code>None</code>. Values are data-type agnostic — anything can be stored.</p>
 
-<h2><span class="bar"></span>2. Operations and complexity</h2>
+
+<h2><span class="bar"></span>2. How the operations work</h2>
+<p>Each step shows the chain after one operation. The highlighted node is the one that changed.</p>
+<div class="lp" id="listplayer">
+ <div class="lp-stage"></div>
+ <div class="lp-bar">
+  <button class="lp-play" type="button">Play</button>
+  <button class="lp-step" type="button">Step</button>
+  <button class="lp-reset" type="button">Reset</button>
+  <p class="lp-caption"></p>
+ </div>
+</div>
+<script type="application/json" id="list-data">{"steps": [{"list": [], "hi": -1, "cap": "Empty list. head = None."}, {"list": ["7"], "hi": 0, "cap": "Prepend 7 \u2014 the new node's next points at the old head (None), then head moves to it. O(1)."}, {"list": ["7", "4"], "hi": 1, "cap": "Append 4 \u2014 walk from head to the last node, then link. O(n), because there is no tail pointer."}, {"list": ["2", "7", "4"], "hi": 0, "cap": "Prepend 2 \u2014 O(1) again, no walking."}, {"list": ["2", "4"], "hi": 1, "cap": "Delete 7 \u2014 find it, then let 2.next skip over it. O(n) to find, O(1) to unlink."}, {"list": ["4"], "hi": 0, "cap": "Delete the head \u2014 head itself must be reassigned. This is the case naive code gets wrong, and why delete() returns the head."}, {"list": [], "hi": -1, "cap": "Delete the last remaining node \u2014 head becomes None and the list is empty again."}]}</script>
+
+<h2><span class="bar"></span>3. Operations and complexity</h2>
 <div class="tw"><table><thead><tr><th>Operation</th><th>Function</th><th>Time</th><th>Why</th></tr></thead><tbody>
 <tr><td>Prepend</td><td><code>insert(..., append=False)</code></td><td>O(1)</td><td>New node points at the old head</td></tr>
 <tr><td>Append</td><td><code>insert(..., append=True)</code></td><td>O(n)</td><td>Walks to the last node — there is no tail pointer</td></tr>
@@ -14,7 +28,7 @@ next node; the list itself is just a reference to the head, and the last node po
 <tr><td>Traverse / print</td><td><code>print_list()</code></td><td>O(n)</td><td></td></tr>
 </tbody></table></div>
 
-<h2><span class="bar"></span>3. The code</h2>
+<h2><span class="bar"></span>4. The code</h2>
 <p class="sub">Python 3.10+ (uses <code>match</code>). <a href="assets/linked_list.py">Download linked_list.py</a></p>
 <pre><code>import sys
 
@@ -222,7 +236,7 @@ if __name__ == &quot;__main__&quot;:
                 print(&quot;Select a correct option [1,2,3 or 4].&quot;)
 </code></pre>
 
-<h2><span class="bar"></span>4. Notes on the implementation</h2>
+<h2><span class="bar"></span>5. Notes on the implementation</h2>
 <ul>
 <li><b>Prepend is O(1), append is O(n).</b> With no tail pointer, appending must walk the whole list.
 Keeping a <code>tail</code> reference would make it O(1) — a standard exam trade-off.</li>
@@ -234,6 +248,24 @@ re-prompts instead of crashing. Note that it also rejects negatives, since <code
 <code>False</code>.</li>
 <li><b>The <code>while … else</code> in <code>delete()</code></b> prints "not found" only when the loop
 finishes without <code>break</code> — correct here, but easy to misread as a bug.</li>
+<li><b><code>delete()</code> removes only the first match.</b> Duplicates further down the list survive.</li>
+<li><b>Values are stored as strings.</b> The menu passes <code>input2()</code> without <code>type="int"</code>,
+so entering <code>5</code> stores <code>"5"</code>. Fine for a demo, wrong for anything numeric.</li>
+<li><b><code>delete()</code> and <code>insert_at()</code> are typed <code>Node</code></b> but are called with
+<code>None</code> on an empty list. The guards handle it; the annotation is just optimistic.</li>
 </ul>
-<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=3" defer></script><script src="assets/calendar.js?v=3" defer></script>
-<script src="assets/urgency.js?v=3" defer></script></body></html>
+
+<h2><span class="bar"></span>6. GATE-style traps</h2>
+<ul>
+<li><b>Deleting the head.</b> The head reference itself has to change, which is why <code>delete()</code> returns it.
+Code that only relinks <code>curr.next</code> silently loses the node and keeps the wrong head.</li>
+<li><b>Deleting the only node.</b> Head becomes <code>None</code> — the list is empty, not a node with no value.</li>
+<li><b>Append without a tail pointer is O(n)</b>, not O(1). Adding a <code>tail</code> makes it O(1) but then
+deleting the tail becomes O(n) — a singly linked list cannot do both.</li>
+<li><b>Indexing.</b> A linked list has no random access: reading the i-th element is O(n), where an array is O(1).</li>
+<li><b>Losing the head leaks the whole list</b> — there is no way back to the nodes, and they are unreachable.</li>
+<li><b>Search is O(n) even when sorted</b>, unless you keep a separate index.</li>
+</ul>
+
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=4" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script src="assets/urgency.js?v=4" defer></script><script src="assets/listplayer.js" defer></script></body></html>

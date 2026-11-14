@@ -59,8 +59,16 @@
       });
       spec.edges.forEach(function (e) {
         var ln = edgeEls[e[0] + "|" + e[1]];
-        if (ln) ln.classList.toggle("done", !!visited[e[0]] && !!visited[e[1]]);
+        if (ln) ln.classList.remove("done");
       });
+      /* light only the edges the search actually used to reach each node */
+      for (var k = 1; k <= i; k++) {
+        var st = spec.steps[k];
+        if (st.p) {
+          var pe = edgeEls[st.p + "|" + st.v];
+          if (pe) pe.classList.add("done");
+        }
+      }
 
       caption.textContent = i < 0
         ? "Press Play, or step through one node at a time."
