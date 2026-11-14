@@ -53,7 +53,10 @@
   var TARGET = new Date("2027-02-06T00:00:00+05:30");   /* IST, exam window opens */
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  var banner = document.createElement("div");
+  var suppress = document.body.hasAttribute("data-nobanner");
+  var banner = null, clockEl = null;
+  if (!suppress) {
+  banner = document.createElement("div");
   banner.className = "ubar";
   banner.setAttribute("role", "status");
   banner.innerHTML =
@@ -65,9 +68,10 @@
     '<span class="u">·</span>' +
     "<span>need <b>" + perWeek.toFixed(1) + "</b>/week</span>";
   document.body.insertBefore(banner, document.body.firstChild);
+  clockEl = banner.querySelector(".clock");
+  }
 
   /* ---- the ticking clock ---- */
-  var clockEl = banner.querySelector(".clock");
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
   function tick() {
     var diff = TARGET - new Date();
@@ -77,8 +81,10 @@
     var m = Math.floor(diff / 60000) % 60;
     var sec = Math.floor(diff / 1000) % 60;
     var txt = d + "d " + pad2(h) + ":" + pad2(m) + (reduce ? "" : ":" + pad2(sec));
-    clockEl.textContent = txt;
-    clockEl.setAttribute("datetime", TARGET.toISOString());
+    if (clockEl) {
+      clockEl.textContent = txt;
+      clockEl.setAttribute("datetime", TARGET.toISOString());
+    }
     out("clock", txt);
   }
   tick();
