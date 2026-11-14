@@ -6,7 +6,7 @@
   var EXAM = (cfg && cfg.dataset.exam) || "2027-02-06";
   var START = (cfg && cfg.dataset.start) || "2026-10-23";
   var TOTAL = (cfg && parseInt(cfg.dataset.total, 10)) || 105;
-  var COVERED = (cfg && parseInt(cfg.dataset.covered, 10)) || 3;
+  var COVERED = (cfg && parseInt(cfg.dataset.covered, 10)) || 4;
   /* Syllabus finish line, leaving a revision buffer before the exam window.
      Exam opens 6 Feb 2027; finish by 9 Jan 2027 = 28-day buffer. */
   var FINISH = (cfg && cfg.dataset.finish) || "2027-01-09";

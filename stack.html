@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>Stack · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=7"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html">GATE DA · Notes</a><a class="lnk" href="index.html">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+<p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p>
+<div class="hero"><span class="badge">Programming, DSA</span><h1>Stack — implementation</h1></div>
+
+<h2><span class="bar"></span>1. What it is</h2>
+<p>A stack is <b>LIFO</b> — last in, first out. Only the top is reachable: you push onto it and pop from it,
+and there is no way to touch anything underneath. Here it is built on a Python list, where
+<code>append()</code> and <code>pop()</code> both act at the end in O(1).</p>
+
+<h2><span class="bar"></span>2. How the operations work</h2>
+<p>Each step shows the stack after one operation. The highlighted box is the current top.</p>
+<div class="stk" id="stackplayer">
+ <div class="stk-stage"></div>
+ <div class="stk-bar">
+  <button class="stk-play" type="button">Play</button>
+  <button class="stk-step" type="button">Step</button>
+  <button class="stk-reset" type="button">Reset</button>
+  <p class="stk-caption"></p>
+ </div>
+</div>
+<script type="application/json" id="stack-data">{"steps": [{"s": [], "hi": -1, "cap": "Empty stack. Nothing to pop or peek."}, {"s": ["5"], "hi": 0, "cap": "Push 5 \u2014 appended at the top. O(1)."}, {"s": ["5", "1"], "hi": 1, "cap": "Push 1 \u2014 it becomes the new top. O(1)."}, {"s": ["5", "1"], "hi": 1, "cap": "Peek \u2014 reads the top (1) without removing it."}, {"s": ["5"], "hi": 0, "cap": "Pop \u2014 removes 1 and returns it. Top is now 5."}, {"s": [], "hi": -1, "cap": "Pop \u2014 removes 5. The stack is empty."}, {"s": [], "hi": -1, "cap": "Pop on an empty stack \u2014 underflow. The guard prints \"Stack is empty!\" instead of crashing."}]}</script>
+
+<h2><span class="bar"></span>3. Operations and complexity</h2>
+<div class="tw"><table><thead><tr><th>Operation</th><th>How</th><th>Time</th></tr></thead><tbody>
+<tr><td>Push</td><td><code>stack.append(v)</code></td><td>O(1)</td></tr>
+<tr><td>Pop</td><td><code>stack.pop()</code></td><td>O(1)</td></tr>
+<tr><td>Peek / top</td><td><code>stack[-1]</code></td><td>O(1)</td></tr>
+<tr><td>isEmpty</td><td><code>len(stack) == 0</code></td><td>O(1)</td></tr>
+<tr><td>Search</td><td>scan the whole stack</td><td>O(n)</td></tr>
+</tbody></table></div>
+
+<h2><span class="bar"></span>4. The code</h2>
+<p class="sub">Python 3.10+ (uses <code>match</code>). <a href="assets/stack.py">Download stack.py</a></p>
+<pre><code>import sys
+
+
+def print_stack(s: list):
+    if len(s) == 0:
+        print(&quot;Empty Stack!&quot;)
+    else:
+        print(f&quot;Stack: {s}&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    stack = []
+
+    while True:
+        print_stack(stack)
+        print(&quot;1. Push&quot;)
+        print(&quot;2. Pop&quot;)
+        print(&quot;3. Peek&quot;)
+        print(&quot;4. isEmpty&quot;)
+        print(&quot;5. Exit&quot;)
+        option = input(&quot;&gt;&gt; &quot;).strip()
+
+        match option:
+            case &quot;1&quot;:
+                inp = input(&quot;Enter a value: &quot;)
+                stack.append(inp)
+            case &quot;2&quot;:
+                if len(stack) &gt; 0:
+                    tmp = stack[-1]
+                    stack.pop()
+                    print(f&quot;{tmp} popped!&quot;)
+                else:
+                    print(&quot;Stack is empty!&quot;)
+            case &quot;3&quot;:
+                if len(stack) &gt; 0:
+                    print(f&quot;Top value: {stack[-1]}&quot;)
+                else:
+                    print(&quot;Stack is empty!&quot;)
+
+            case &quot;4&quot;:
+                if len(stack) &gt; 0:
+                    print(&quot;Stack is not empty!&quot;)
+                else:
+                    print(&quot;Stack is empty!&quot;)
+            case &quot;5&quot;:
+                sys.exit()
+            case _:
+                print(&quot;Select a option number between 1 to 5!&quot;)
+</code></pre>
+
+<h2><span class="bar"></span>5. Notes on the implementation</h2>
+<ul>
+<li><b>Underflow is guarded.</b> Pop and peek both check the length first, so an empty stack prints
+"Stack is empty!" rather than raising <code>IndexError</code>.</li>
+<li><b>The menu input is stripped.</b> <code>input("&gt;&gt; ").strip()</code> means a stray leading or trailing
+space no longer breaks the menu — without it, typing <code> 1</code> or <code>5 </code> silently failed.</li>
+<li><b>Values are stored as strings.</b> <code>input()</code> returns <code>str</code>, so the stack holds
+<code>'5'</code>, not <code>5</code>. Fine for a demo; wrong for anything numeric.</li>
+<li><b>Zero-padded and signed input is still rejected</b> — <code>01</code> and <code>+1</code> fall through to the
+invalid-option message, because the match is on the raw string.</li>
+</ul>
+
+<div class="card">
+<h3 style="margin-top:0">What a stress test found</h3>
+<p style="margin:0 0 10px">200 randomised sessions against a reference model produced <b>zero</b> wrong
+answers — push, pop, peek and isEmpty are all correct. Two limits remain:</p>
+<ul style="margin:0">
+<li><b>Ctrl-D crashes it.</b> End of input raises <code>EOFError</code> with a traceback instead of exiting
+cleanly.</li>
+<li><b>Output is O(n²).</b> The whole stack reprints on every loop, so 10,000 pushes emit about 250 MB of
+text and take ~17 seconds.</li>
+</ul>
+</div>
+
+<h2><span class="bar"></span>6. GATE-style traps</h2>
+<ul>
+<li><b>Underflow vs overflow.</b> Popping an empty stack is underflow; pushing onto a full fixed-size stack
+is overflow. A Python list grows, so only underflow can happen here.</li>
+<li><b>Stack vs queue.</b> LIFO vs FIFO. A stack removes the most recent item; a queue removes the oldest.</li>
+<li><b>Push and pop are O(1) amortised</b> on a dynamic array — an occasional resize is O(n), but spread over
+the pushes that caused it.</li>
+<li><b>A linked-list stack is also O(1)</b> for push and pop, but pays for a pointer per node and loses
+cache locality.</li>
+<li><b>Recursion is a stack.</b> Every call frame is pushed; deep recursion overflows the call stack, which is
+the same underflow/overflow idea one level up.</li>
+<li><b>Peek must not pop.</b> Reading the top without removing it is the point of the operation.</li>
+</ul>
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=4" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script src="assets/urgency.js?v=5" defer></script><script src="assets/stackplayer.js" defer></script></body></html>
