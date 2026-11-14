@@ -247,3 +247,16 @@ html[data-tier="7"]  .ubar{background:#f2bbaf;color:#8d1a0a}
 .momentum{display:flex;gap:11px;flex-wrap:wrap;margin:16px 0 0}
 .momentum .stat b{font-size:1.2rem}
 @media(max-width:560px){ .ubar{font-size:.74rem;gap:9px;padding:7px 10px} }
+
+/* ---------- nav: fit six links on a phone ---------- */
+@media(max-width:600px){
+  .nav .in{gap:11px;padding:10px 13px;flex-wrap:wrap}
+  .nav .lnk{font-size:.8rem}
+  .brand{font-size:.93rem}
+  .nav .sp{display:none}
+}
+@media(max-width:400px){
+  .nav .in{gap:9px}
+  .nav .lnk{font-size:.76rem}
+}
+@media(max-width:600px){ .nav a[href*="github.com"]{display:none} }

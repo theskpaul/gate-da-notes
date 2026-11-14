@@ -1,7 +1,12 @@
 /* Urgency layer: top banner, live counters, pace-vs-needed, next-up.
    Constants live here — update COVERED when a new topic gets a note. */
 (function () {
-  var EXAM = "2027-02-06", START = "2026-10-23", TOTAL = 105, COVERED = 3;
+  /* defaults; any [data-exam]/[data-total]/[data-covered] on the page overrides them */
+  var cfg = document.querySelector("[data-exam]");
+  var EXAM = (cfg && cfg.dataset.exam) || "2027-02-06";
+  var START = (cfg && cfg.dataset.start) || "2026-10-23";
+  var TOTAL = (cfg && parseInt(cfg.dataset.total, 10)) || 105;
+  var COVERED = (cfg && parseInt(cfg.dataset.covered, 10)) || 3;
 
   var exam = new Date(EXAM + "T00:00:00");
   var start = new Date(START + "T00:00:00");

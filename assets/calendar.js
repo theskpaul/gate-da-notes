@@ -32,10 +32,9 @@
   var cd = document.getElementById("countdown");
   if (cd && D.exam && D.exam.length) {
     var first = D.exam.slice().sort()[0];
-    var p = parse(first);
-    var target = new Date(p.y, p.m, p.d);
-    var t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var days = Math.round((target - t0) / 86400000);
+    /* same instant the banner counts to, so the two never disagree */
+    var target = new Date(first + "T00:00:00+05:30");
+    var days = Math.floor((target - new Date()) / 86400000);
     cd.innerHTML = days > 0
       ? '<b>' + days + '</b><span>days to the exam window</span>'
       : days === 0
