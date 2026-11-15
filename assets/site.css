@@ -372,3 +372,16 @@ html.snap #below{scroll-snap-align:start}
 .lp-arrow{color:var(--fg-soft);font-size:1.05rem;font-weight:700;line-height:1}
 .lp-none{color:var(--fg-soft);font-weight:600}
 .stk-top{color:var(--accent-ink);font-weight:800}
+
+/* ---------- mobile nav: two rows, room to breathe ---------- */
+@media(max-width:640px){
+  .nav .in{flex-wrap:wrap;column-gap:19px;row-gap:3px;padding:11px 16px}
+  .brand{flex:1 0 100%;font-size:.98rem;letter-spacing:-.01em}
+  .nav .lnk{font-size:.85rem;font-weight:500;padding:3px 0;letter-spacing:.005em}
+  .nav .sp{display:none}
+  .nav a[href*="github.com"]{display:none}
+}
+@media(max-width:380px){
+  .nav .in{column-gap:15px;padding:10px 14px}
+  .nav .lnk{font-size:.8rem}
+}
