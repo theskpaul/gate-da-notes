@@ -67,8 +67,20 @@
     "<span>finish by <b>" + finishLabel + "</b></span>" +
     '<span class="u">·</span>' +
     "<span>need <b>" + perWeek.toFixed(1) + "</b>/wk (<b>" + perDay.toFixed(1) + "</b>/day)</span>";
-  document.body.insertBefore(banner, document.body.firstChild);
   clockEl = banner.querySelector(".clock");
+  }
+
+  /* one sticky header instead of two elements whose offsets must be kept in sync */
+  var nav = document.querySelector(".nav");
+  var head = null;
+  if (nav) {
+    head = document.createElement("div");
+    head.className = "stickyhead";
+    nav.parentNode.insertBefore(head, nav);
+    head.appendChild(nav);
+    if (banner) head.insertBefore(banner, nav);
+  } else if (banner) {
+    document.body.insertBefore(banner, document.body.firstChild);
   }
 
   /* ---- the ticking clock ---- */
@@ -90,21 +102,17 @@
   tick();
   setInterval(tick, reduce ? 30000 : 1000);
 
-  /* keep the nav directly under the banner, and make anchor jumps clear both */
+  /* publish the header height; anchors use it via CSS, so nothing can go stale */
   function syncOffsets() {
-    var nav = document.querySelector(".nav");
-    if (!nav) return;
-    var barH = (banner && !banner.classList.contains("ubar-hidden")) ? banner.offsetHeight : 0;
-    nav.style.top = barH + "px";
-    var off = barH + nav.offsetHeight + 12;
-    ["#below", "#index"].forEach(function (sel) {
-      var el = document.querySelector(sel);
-      if (el) el.style.scrollMarginTop = off + "px";
-    });
+    var h = head ? head.offsetHeight : 0;
+    document.documentElement.style.setProperty("--headh", h + "px");
   }
   window.__syncOffsets = syncOffsets;
   syncOffsets();
   window.addEventListener("resize", syncOffsets);
+  window.addEventListener("load", syncOffsets);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncOffsets).catch(function () {});
+  if (window.ResizeObserver && head) new ResizeObserver(syncOffsets).observe(head);
 
   out("days", days);
   out("left", left);

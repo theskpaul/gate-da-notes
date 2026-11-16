@@ -410,3 +410,9 @@ html.snap #below{scroll-snap-align:start}
 /* ---------- banner rides with the nav, and anchors clear the sticky header ---------- */
 .ubar{position:sticky;top:0;z-index:41}
 .nav{z-index:40}
+
+/* ---------- one sticky header: banner + nav move as a unit ---------- */
+.stickyhead{position:sticky;top:0;z-index:40}
+.stickyhead .nav{position:static;top:auto;z-index:auto}
+.stickyhead .ubar{position:static;top:auto;z-index:auto}
+#below,#index{scroll-margin-top:calc(var(--headh, 90px) + 12px)}
