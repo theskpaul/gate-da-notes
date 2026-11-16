@@ -471,3 +471,25 @@ a.lcard:hover,a.lcard:focus-visible{
   a.lcard:hover,a.lcard:focus-visible{
     box-shadow:0 0 0 1px rgba(224,173,74,.28),0 0 22px rgba(224,173,74,.16)}
 }
+
+/* ---------- grow with padding, not scale: scaling re-rasterises the text ---------- */
+/* and no clipping container, so the glow can never be cut at the first/last card */
+.landing-right{max-height:none;overflow:visible;padding:14px 12px}
+
+a.lcard{transform:none;will-change:auto;
+  transition:box-shadow .2s ease,padding .2s ease,margin .2s ease,border-color .2s ease}
+a.lcard:hover,a.lcard:focus-visible{
+  transform:none;
+  padding:14px 16px;          /* the box grows ~6px each way; the text does not rescale */
+  margin-block:2px;           /* neighbours part slightly */
+  position:relative;z-index:3;
+  border-color:var(--line-strong);
+  box-shadow:0 0 0 1px rgba(30,25,15,.07),0 0 20px rgba(30,25,15,.28)}
+@media(prefers-color-scheme:dark){
+  a.lcard:hover,a.lcard:focus-visible{
+    box-shadow:0 0 0 1px rgba(224,173,74,.28),0 0 22px rgba(224,173,74,.16)}
+}
+@media(prefers-reduced-motion:reduce){
+  a.lcard{transition:none}
+  a.lcard:hover,a.lcard:focus-visible{padding:11px 13px;margin-block:0}
+}
