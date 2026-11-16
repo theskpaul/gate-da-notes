@@ -15,8 +15,15 @@
     if (window.__syncOffsets) window.__syncOffsets();
   }
 
-  /* keep the banner in step with the view, except while a flip is running */
-  function syncBar() { if (!busy) setBar(window.scrollY > 8); }
+  var hint = document.querySelector(".scroll-hint");
+
+  /* keep the banner AND the scroll arrow in step with the view */
+  function syncBar() {
+    if (busy) return;
+    var onHome = window.scrollY <= 8;
+    setBar(!onHome);
+    if (hint) hint.classList.toggle("is-hidden", !onHome);
+  }
   setBar(window.scrollY > 8);
   window.addEventListener("scroll", syncBar, { passive: true });
 
@@ -24,6 +31,7 @@
 
   function goDown() {
     busy = true;
+    if (hint) hint.classList.add("is-hidden");
     setBar(true);                              /* show it, THEN measure where the index sits */
     requestAnimationFrame(function () {
       var below = document.getElementById("below");
@@ -34,6 +42,7 @@
   }
   function goUp() {
     busy = true;
+    if (hint) hint.classList.remove("is-hidden");
     setBar(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(function () { busy = false; prev = window.scrollY; }, GRACE);

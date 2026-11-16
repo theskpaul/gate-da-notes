@@ -416,3 +416,20 @@ html.snap #below{scroll-snap-align:start}
 .stickyhead .nav{position:static;top:auto;z-index:auto}
 .stickyhead .ubar{position:static;top:auto;z-index:auto}
 #below,#index{scroll-margin-top:calc(var(--headh, 90px) + 12px)}
+
+/* ---------- home cards: hover lift + they link to their topics ---------- */
+a.lcard{display:block;text-decoration:none;color:inherit;box-shadow:var(--shadow-sm);
+  transition:box-shadow .18s ease,transform .18s ease,border-color .18s ease}
+a.lcard:hover,a.lcard:focus-visible{
+  box-shadow:0 4px 10px rgba(30,25,15,.10),0 16px 32px -16px rgba(30,25,15,.55);
+  transform:translateY(-2px);border-color:var(--line-strong);text-decoration:none;outline:none}
+@media(prefers-color-scheme:dark){
+  a.lcard:hover,a.lcard:focus-visible{box-shadow:0 4px 10px rgba(0,0,0,.35),0 16px 32px -16px rgba(0,0,0,.85)}
+}
+@media(prefers-reduced-motion:reduce){a.lcard{transition:none}a.lcard:hover{transform:none}}
+
+/* section anchors must clear the sticky header too */
+[id^="sec-"]{scroll-margin-top:calc(var(--headh, 90px) + 12px)}
+
+/* the scroll arrow disappears once you have left the landing */
+.scroll-hint.is-hidden{opacity:0;pointer-events:none;animation:none;transition:opacity .25s ease}
