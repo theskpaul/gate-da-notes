@@ -433,3 +433,26 @@ a.lcard:hover,a.lcard:focus-visible{
 
 /* the scroll arrow disappears once you have left the landing */
 .scroll-hint.is-hidden{opacity:0;pointer-events:none;animation:none;transition:opacity .25s ease}
+
+/* ---------- home cards: room for the shadow, scale on hover, neighbours part ---------- */
+/* overflow-y:auto clips children at the padding edge — the padding is what lets
+   the shadow breathe on all four sides instead of only escaping at the bottom */
+.landing-right{padding:18px 20px;scrollbar-gutter:stable}
+
+a.lcard{transform-origin:center;will-change:transform;
+  transition:box-shadow .2s ease,transform .2s ease,border-color .2s ease,margin .2s ease}
+a.lcard:hover,a.lcard:focus-visible{
+  transform:scale(1.035);
+  margin-block:5px;                 /* pushes the cards above and below away */
+  position:relative;z-index:3;
+  border-color:var(--line-strong);
+  box-shadow:0 3px 8px rgba(30,25,15,.09),0 18px 34px -14px rgba(30,25,15,.5);
+  outline:none}
+@media(prefers-color-scheme:dark){
+  a.lcard:hover,a.lcard:focus-visible{
+    box-shadow:0 3px 8px rgba(0,0,0,.3),0 18px 34px -14px rgba(0,0,0,.85)}
+}
+@media(prefers-reduced-motion:reduce){
+  a.lcard{transition:none}
+  a.lcard:hover,a.lcard:focus-visible{transform:none;margin-block:0}
+}
