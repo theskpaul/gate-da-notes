@@ -10,7 +10,10 @@
   var busy = false, timer = null, prev = window.scrollY;
   var FLIP_AT = 0.18, GRACE = 700;
 
-  function setBar(show) { if (bar) bar.classList.toggle("ubar-hidden", !show); }
+  function setBar(show) {
+    if (bar) bar.classList.toggle("ubar-hidden", !show);
+    if (window.__syncOffsets) window.__syncOffsets();
+  }
 
   /* keep the banner in step with the view, except while a flip is running */
   function syncBar() { if (!busy) setBar(window.scrollY > 8); }
@@ -24,8 +27,8 @@
     setBar(true);                              /* show it, THEN measure where the index sits */
     requestAnimationFrame(function () {
       var below = document.getElementById("below");
-      var top = below.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top, behavior: "smooth" });
+      /* scrollIntoView honours scroll-margin-top, so the sticky banner+nav never cover the first card */
+      below.scrollIntoView({ behavior: "smooth", block: "start" });
       setTimeout(function () { busy = false; prev = window.scrollY; }, GRACE);
     });
   }

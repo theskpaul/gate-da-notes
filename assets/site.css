@@ -406,3 +406,7 @@ html.snap #below{scroll-snap-align:start}
 .qp-bar button{font:inherit;font-size:.82rem;font-weight:650;padding:7px 15px;border-radius:99px;
   border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);cursor:pointer}
 .qp-bar button:hover{background:var(--accent-soft);border-color:var(--accent)}
+
+/* ---------- banner rides with the nav, and anchors clear the sticky header ---------- */
+.ubar{position:sticky;top:0;z-index:41}
+.nav{z-index:40}

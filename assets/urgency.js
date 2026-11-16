@@ -90,6 +90,22 @@
   tick();
   setInterval(tick, reduce ? 30000 : 1000);
 
+  /* keep the nav directly under the banner, and make anchor jumps clear both */
+  function syncOffsets() {
+    var nav = document.querySelector(".nav");
+    if (!nav) return;
+    var barH = (banner && !banner.classList.contains("ubar-hidden")) ? banner.offsetHeight : 0;
+    nav.style.top = barH + "px";
+    var off = barH + nav.offsetHeight + 12;
+    ["#below", "#index"].forEach(function (sel) {
+      var el = document.querySelector(sel);
+      if (el) el.style.scrollMarginTop = off + "px";
+    });
+  }
+  window.__syncOffsets = syncOffsets;
+  syncOffsets();
+  window.addEventListener("resize", syncOffsets);
+
   out("days", days);
   out("left", left);
   out("weeks", Math.round(weeks));
