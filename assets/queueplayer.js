@@ -52,8 +52,15 @@
     if (timer) return;
     if (i >= spec.steps.length - 1) { i = -1; render(); }
     bPlay.textContent = "Pause";
-    timer = setInterval(function () { if (!step()) pause(); }, 1500);
+    timer = setInterval(function () { if (!step()) pause(); }, Math.max(60, 1500 / mult));
   }
+
+  var mult = 1;
+  if (window.PlayerSpeed) window.PlayerSpeed.wire(mount, function (m) {
+    mult = m;
+    if (timer) { clearInterval(timer);
+      timer = setInterval(function () { if (!step()) pause(); }, Math.max(60, 1500 / mult)); }
+  });
 
   bPlay.addEventListener("click", function () { timer ? pause() : play(); });
   bStep.addEventListener("click", function () { step(); });

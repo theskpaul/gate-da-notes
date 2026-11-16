@@ -493,3 +493,12 @@ a.lcard:hover,a.lcard:focus-visible{
   a.lcard{transition:none}
   a.lcard:hover,a.lcard:focus-visible{padding:11px 13px;margin-block:0}
 }
+
+/* ---------- animation speed control ---------- */
+.spd{display:inline-flex;gap:2px;margin-left:auto;border:1px solid var(--line-strong);
+  border-radius:99px;overflow:hidden;background:var(--surface)}
+.spd-btn{font:inherit;font-size:.74rem;font-weight:650;padding:5px 10px;border:0;
+  background:transparent;color:var(--muted);cursor:pointer;transition:background .15s ease,color .15s ease}
+.spd-btn:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.spd-btn.is-on{background:var(--accent);color:var(--gp-on-accent)}
+@media(max-width:520px){ .spd{margin-left:0;width:100%;justify-content:space-between} }

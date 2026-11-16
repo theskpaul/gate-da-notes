@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Queue · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=20"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Queue · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=21"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
 
 <p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p>
 <div class="hero"><span class="badge">Programming, DSA</span><h1>Queue — implementation</h1></div>
@@ -16,10 +16,10 @@ a stack pushes and pops at the same end, a queue does not.</p>
  <div class="qp-bar">
   <button class="qp-play" type="button">Play</button>
   <button class="qp-step" type="button">Step</button>
-  <button class="qp-reset" type="button">Reset</button>
+  <button class="qp-reset" type="button">Reset</button><span class="spd" role="group" aria-label="Animation speed"><button class="spd-btn" type="button" data-speed="0.5">0.5&times;</button><button class="spd-btn is-on" type="button" data-speed="1">1&times;</button><button class="spd-btn" type="button" data-speed="2">2&times;</button><button class="spd-btn" type="button" data-speed="4">4&times;</button></span>
  </div>
 </div>
-<script type="application/json" id="queue-data">{"steps": [{"q": [], "hi": -1, "cap": "Empty queue. Nothing to dequeue or peek."}, {"q": ["5"], "hi": 1, "cap": "enqueue 5 \u2014 added at the rear. The queue has one element, so it is both front and rear. O(1)."}, {"q": ["5", "1"], "hi": 1, "cap": "enqueue 1 \u2014 added at the rear, behind 5. O(1)."}, {"q": ["5", "1", "9"], "hi": 1, "cap": "enqueue 9 \u2014 the rear keeps moving right; the front does not move. O(1)."}, {"q": ["5", "1", "9"], "hi": 0, "cap": "peek \u2014 reads the front (5) without removing it. Note it is NOT the most recent element."}, {"q": ["1", "9"], "hi": 1, "cap": "dequeue \u2014 removes the front (5) and returns it. Everything shifts left. With list.pop(0) this is O(n)."}, {"q": ["9"], "hi": 0, "cap": "dequeue \u2014 removes 1. The element that arrived second now leaves second. That is FIFO."}, {"q": [], "hi": -1, "cap": "dequeue \u2014 removes 9. The queue is empty."}, {"q": [], "hi": -1, "cap": "dequeue on an empty queue \u2014 underflow. Returns None, and because None can never be enqueued, None can only mean \"empty\"."}]}</script>
+<script type="application/json" id="queue-data">{"steps": [{"q": [], "hi": -1, "cap": "Empty queue."}, {"q": ["5"], "hi": 1, "cap": "enqueue 5 \u2014 added at the rear; with one element it is both front and rear. O(1)."}, {"q": ["5", "1"], "hi": 1, "cap": "enqueue 1 \u2014 behind 5. O(1)."}, {"q": ["5", "1", "9"], "hi": 1, "cap": "enqueue 9 \u2014 the rear moves right; the front does not move. O(1)."}, {"q": ["5", "1", "9", "3"], "hi": 1, "cap": "enqueue 3 \u2014 four elements waiting."}, {"q": ["5", "1", "9", "3", "7"], "hi": 1, "cap": "enqueue 7 \u2014 five in the queue, and 5 has been waiting longest."}, {"q": ["5", "1", "9", "3", "7"], "hi": 0, "cap": "peek \u2014 reads the front (5). Not the newest element \u2014 the oldest."}, {"q": ["1", "9", "3", "7"], "hi": 1, "cap": "dequeue \u2014 removes 5 and returns it. Everything shifts left: O(n) with list.pop(0)."}, {"q": ["9", "3", "7"], "hi": 1, "cap": "dequeue \u2014 removes 1. Arrival order is service order."}, {"q": ["9", "3", "7", "2"], "hi": 1, "cap": "enqueue 2 \u2014 joins the rear, behind 7."}, {"q": ["3", "7", "2"], "hi": 1, "cap": "dequeue \u2014 removes 9."}, {"q": ["7", "2"], "hi": 1, "cap": "dequeue \u2014 removes 3."}, {"q": ["2"], "hi": 0, "cap": "dequeue \u2014 removes 7."}, {"q": [], "hi": -1, "cap": "dequeue \u2014 removes 2. The queue is empty."}, {"q": [], "hi": -1, "cap": "dequeue on an empty queue \u2014 underflow. Returns None, which can only mean \"empty\"."}]}</script>
 
 <h2><span class="bar"></span>3. Operations and complexity</h2>
 <div class="tw"><table><thead><tr><th>Operation</th><th>How</th><th>Time</th></tr></thead><tbody>
@@ -110,5 +110,28 @@ empty. Amortised O(1) per operation.</li>
 <li><b>BFS uses a queue.</b> That is precisely what makes BFS explore level by level, while DFS's stack
 dives deep. Swap the container and the traversal changes.</li>
 </ul>
-<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=4" defer></script><script src="assets/calendar.js?v=3" defer></script>
-<script src="assets/urgency.js?v=9" defer></script><script src="assets/queueplayer.js" defer></script></body></html>
+
+<h2><span class="bar"></span>7. Where it shows up in the paper</h2>
+<ul>
+<li><b>BFS.</b> The queue is exactly what makes BFS explore level by level; swap it for a stack and you get DFS.</li>
+<li><b>Scheduling.</b> Round-robin CPU scheduling, disk request ordering, printer spooling — first come, first
+served.</li>
+<li><b>Buffers.</b> A producer enqueues, a consumer dequeues, and the queue absorbs the difference in their
+speeds.</li>
+<li><b>Circular queue.</b> With a fixed array the rear wraps round to index 0. The catch: full and empty both
+look like <code>front == rear</code>, so you need a separate count or one deliberately wasted slot.</li>
+<li><b>Deque</b> — insert and remove at both ends. <b>Priority queue</b> — not FIFO at all: a heap ordered by
+priority, O(log n) per operation.</li>
+</ul>
+
+<div class="card">
+<h3 style="margin-top:0">Worked: a queue built from two stacks</h3>
+<p style="margin:0 0 8px"><b>enqueue</b> → push onto stack A. <b>dequeue</b> → if B is empty, pour all of A into
+B (which reverses the order), then pop from B.</p>
+<p style="margin:0">A single dequeue can cost O(n), but each element is moved at most twice — once into B and
+once out — so the <b>amortised</b> cost is O(1) per operation. That word "amortised" is usually the mark
+being given.</p>
+</div>
+
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=5" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script src="assets/urgency.js?v=9" defer></script><script src="assets/queueplayer.js?v=2" defer></script></body></html>

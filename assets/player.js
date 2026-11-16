@@ -85,9 +85,16 @@
       if (timer) return;
       if (i >= spec.steps.length - 1) { i = -1; render(); }
       btnPlay.textContent = "Pause";
-      timer = setInterval(function () { if (!step()) pause(); }, speed);
+      timer = setInterval(function () { if (!step()) pause(); }, Math.max(60, speed / mult));
     }
     function reset() { pause(); i = -1; render(); }
+
+    var mult = 1;
+    if (window.PlayerSpeed) window.PlayerSpeed.wire(mount, function (m) {
+      mult = m;
+      if (timer) { clearInterval(timer);
+        timer = setInterval(function () { if (!step()) pause(); }, Math.max(60, speed / mult)); }
+    });
 
     btnPlay.addEventListener("click", function () { timer ? pause() : play(); });
     btnStep.addEventListener("click", function () { pause(); step(); });

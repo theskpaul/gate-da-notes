@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=20"></head><body><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=21"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
 <h2><span class="bar"></span>1. What it is</h2>
 <p>A singly linked list written from scratch. Each <code>Node</code> holds a value and a pointer to the
 next node; the list itself is just a reference to the head, and the last node points at
@@ -13,10 +13,10 @@ next node; the list itself is just a reference to the head, and the last node po
  <div class="lp-bar">
   <button class="lp-play" type="button">Play</button>
   <button class="lp-step" type="button">Step</button>
-  <button class="lp-reset" type="button">Reset</button>
+  <button class="lp-reset" type="button">Reset</button><span class="spd" role="group" aria-label="Animation speed"><button class="spd-btn" type="button" data-speed="0.5">0.5&times;</button><button class="spd-btn is-on" type="button" data-speed="1">1&times;</button><button class="spd-btn" type="button" data-speed="2">2&times;</button><button class="spd-btn" type="button" data-speed="4">4&times;</button></span>
  </div>
 </div>
-<script type="application/json" id="list-data">{"steps": [{"list": [], "hi": -1, "cap": "Empty list. head = None."}, {"list": ["7"], "hi": 0, "cap": "Prepend 7 \u2014 the new node's next points at the old head (None), then head moves to it. O(1)."}, {"list": ["7", "4"], "hi": 1, "cap": "Append 4 \u2014 walk from head to the last node, then link. O(n), because there is no tail pointer."}, {"list": ["2", "7", "4"], "hi": 0, "cap": "Prepend 2 \u2014 O(1) again, no walking."}, {"list": ["2", "4"], "hi": 1, "cap": "Delete 7 \u2014 find it, then let 2.next skip over it. O(n) to find, O(1) to unlink."}, {"list": ["4"], "hi": 0, "cap": "Delete the head \u2014 head itself must be reassigned. This is the case naive code gets wrong, and why delete() returns the head."}, {"list": [], "hi": -1, "cap": "Delete the last remaining node \u2014 head becomes None and the list is empty again."}]}</script>
+<script type="application/json" id="list-data">{"steps": [{"list": [], "hi": -1, "cap": "Empty list. head = None."}, {"list": ["7"], "hi": 0, "cap": "Prepend 7 \u2014 the new node points at the old head (None), then head moves to it. O(1)."}, {"list": ["7", "4"], "hi": 1, "cap": "Append 4 \u2014 walk from head to the last node, then link. O(n), because there is no tail pointer."}, {"list": ["2", "7", "4"], "hi": 0, "cap": "Prepend 2 \u2014 O(1) again, no walking."}, {"list": ["2", "7", "4", "9"], "hi": 3, "cap": "Append 9 \u2014 another full walk to the tail. O(n)."}, {"list": ["1", "2", "7", "4", "9"], "hi": 0, "cap": "Prepend 1 \u2014 five nodes now, and the head has moved three times."}, {"list": ["1", "2", "4", "9"], "hi": 2, "cap": "Delete 7 \u2014 find it, then let 2.next skip over it. O(n) to find, O(1) to unlink."}, {"list": ["1", "2", "6", "4", "9"], "hi": 2, "cap": "Insert 6 at position 3 \u2014 walk to position \u2212 1 (the node holding 2), then splice the new node in. O(n)."}, {"list": ["2", "6", "4", "9"], "hi": 0, "cap": "Delete the head \u2014 head itself must be reassigned. This is the case naive code gets wrong, and why delete() returns the head."}, {"list": ["2", "6", "4"], "hi": 2, "cap": "Delete 9, the last node \u2014 the previous node's next becomes None."}, {"list": ["2", "6"], "hi": 1, "cap": "Delete 4 \u2014 three nodes left."}, {"list": ["2"], "hi": 0, "cap": "Delete 6 \u2014 one node left: head points at 2, and 2.next is None."}, {"list": [], "hi": -1, "cap": "Delete the last remaining node \u2014 head becomes None and the list is empty again."}]}</script>
 
 <h2><span class="bar"></span>3. Operations and complexity</h2>
 <div class="tw"><table><thead><tr><th>Operation</th><th>Function</th><th>Time</th><th>Why</th></tr></thead><tbody>
@@ -267,5 +267,31 @@ deleting the tail becomes O(n) — a singly linked list cannot do both.</li>
 <li><b>Search is O(n) even when sorted</b>, unless you keep a separate index.</li>
 </ul>
 
-<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=4" defer></script><script src="assets/calendar.js?v=3" defer></script>
-<script src="assets/urgency.js?v=9" defer></script><script src="assets/listplayer.js" defer></script></body></html>
+
+<h2><span class="bar"></span>7. Where it shows up in the paper</h2>
+<ul>
+<li><b>Reversing a list.</b> Three pointers — prev, curr, next — walking the list once. O(n) time and O(1)
+extra space; the trick is saving <code>next</code> before you overwrite the link.</li>
+<li><b>Cycle detection (Floyd's tortoise and hare).</b> One pointer moves a step at a time, another two. If they
+ever meet there is a cycle. O(n) time, O(1) space — no visited set needed.</li>
+<li><b>Middle of the list.</b> The same slow/fast trick: when fast reaches the end, slow is at the middle.</li>
+<li><b>Merging two sorted lists.</b> Repeatedly take the smaller of the two heads. O(n + m).</li>
+<li><b>The three shapes.</b> Singly (one pointer, forward only), doubly (two pointers, so delete is O(1) once you
+hold the node), circular (the last node points back at the head — traversal must stop by count, not by None).</li>
+</ul>
+
+<div class="card">
+<h3 style="margin-top:0">Array vs linked list</h3>
+<div class="tw"><table><thead><tr><th>Operation</th><th>Array</th><th>Linked list</th></tr></thead><tbody>
+<tr><td>Access by index</td><td>O(1)</td><td>O(n)</td></tr>
+<tr><td>Insert / delete at the front</td><td>O(n) — everything shifts</td><td>O(1)</td></tr>
+<tr><td>Insert / delete at the end</td><td>O(1) amortised</td><td>O(n) without a tail pointer</td></tr>
+<tr><td>Search by value</td><td>O(n)</td><td>O(n)</td></tr>
+<tr><td>Memory</td><td>contiguous, no overhead</td><td>a pointer per node, scattered</td></tr>
+</tbody></table></div>
+<p style="margin:0">The trade is <b>random access against cheap insertion</b>. Neither wins outright — that is
+the exam question.</p>
+</div>
+
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=5" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script src="assets/urgency.js?v=9" defer></script><script src="assets/listplayer.js?v=2" defer></script></body></html>
