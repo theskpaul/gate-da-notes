@@ -385,3 +385,24 @@ html.snap #below{scroll-snap-align:start}
   .nav .in{column-gap:15px;padding:10px 14px}
   .nav .lnk{font-size:.8rem}
 }
+
+/* ---------- queue animation ---------- */
+.qp{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);
+  padding:16px;margin:16px 0;box-shadow:var(--shadow-sm)}
+.qp-caption{margin:0 0 14px;padding-left:12px;border-left:3px solid var(--accent);
+  font-size:.93rem;font-weight:600;line-height:1.5;color:var(--fg);min-height:1.5em}
+.qp-stage{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;min-height:64px;padding:4px 0}
+.qp-item{display:flex;flex-direction:column;align-items:center;gap:5px}
+.qp-box{display:grid;place-items:center;min-width:52px;height:38px;padding:0 12px;
+  border:2px solid var(--line-strong);border-radius:8px;background:var(--bg-soft);
+  font-weight:700;font-variant-numeric:tabular-nums;
+  transition:background .25s ease,border-color .25s ease,transform .25s ease}
+.qp-box.hi{background:var(--accent);border-color:var(--accent-ink);color:var(--gp-on-accent);transform:scale(1.04)}
+.qp-tag{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-ink);min-height:1em}
+.qp-arrow{color:var(--fg-soft);font-size:1.05rem;font-weight:700;padding-top:10px}
+.qp-empty{font-size:.85rem;color:var(--muted);font-style:italic;padding:10px 0}
+.qp-bar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:13px}
+.qp-bar button{font:inherit;font-size:.82rem;font-weight:650;padding:7px 15px;border-radius:99px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);cursor:pointer}
+.qp-bar button:hover{background:var(--accent-soft);border-color:var(--accent)}
