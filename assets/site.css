@@ -456,3 +456,18 @@ a.lcard:hover,a.lcard:focus-visible{
   a.lcard{transition:none}
   a.lcard:hover,a.lcard:focus-visible{transform:none;margin-block:0}
 }
+
+/* ---------- card glow: zero offset = equal on all four sides ---------- */
+/* the column clips at its padding edge, so the padding must exceed the glow
+   radius plus the extra reach added by the hover scale */
+.landing-right{padding:30px 26px;scrollbar-gutter:stable}
+
+a.lcard{box-shadow:0 0 0 1px rgba(30,25,15,.05),0 0 13px rgba(30,25,15,.11)}
+a.lcard:hover,a.lcard:focus-visible{
+  transform:scale(1.03);
+  box-shadow:0 0 0 1px rgba(30,25,15,.07),0 0 20px rgba(30,25,15,.28)}
+@media(prefers-color-scheme:dark){
+  a.lcard{box-shadow:0 0 0 1px rgba(255,255,255,.05),0 0 13px rgba(0,0,0,.55)}
+  a.lcard:hover,a.lcard:focus-visible{
+    box-shadow:0 0 0 1px rgba(224,173,74,.28),0 0 22px rgba(224,173,74,.16)}
+}
