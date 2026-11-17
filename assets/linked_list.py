@@ -1,204 +1,241 @@
-import sys
-
-
 class Node:
-    def __init__(self, value, node) -> None:
-        self.value = value
-        self.node: Node = node
+    def __init__(self, data, next_node) -> None:
+        self.data = data
+        self.next = next_node
 
 
-def print_list(head_node: Node | None):
-    while head_node != None:
-        print(head_node.value, end=" -> ")
-        head_node = head_node.node
-    print("None")
-
-
-def ll_len(head_node: Node | None) -> int:
-    count: int = 0
-
-    if head_node != None:
-        tmp: Node = head_node
-        while tmp != None:
-            count += 1
-            tmp = tmp.node
-
-    return count
-
-
-def input2(msg="", try_again_msg="", type="undefined"):
-    while True:
-        value: str = input(msg)
-        if type == "int":
-            if value.isdecimal():
-                i_value: int = int(value)
-                return i_value
-            else:
-                print(try_again_msg)
-        elif type == "undefined" or type == "str":
-            return value
-
-
-def insert(value, head_node: Node | None = None, append: bool = False) -> Node:
+class LinkedList:
     """
-    This insert function's job to to insert new nodes at the first or at the
-    last of the linked list. It will return the whole linked list after insertion is done.
+    Linked List is a linear data structure that stores data as nodes. Each node also stores
+    the address of the next node along with its data. These nodes are stored at random
+    positions in memory; they are not stored in contiguous memory.
 
-    It has thee parameters -
-        1. value = It is the value that going to be stored in the nodes of the Linked List.
-                   It doesn't have any fixed data type and default value, so it can be set
-                   to anything and it is datatype agnostic.
-        2. head_node = This parameter takes the current linked list as an input. It have two
-                       datatypes `Node` and `None`. if any previous linked list have not been
-                       given then it will utilise the `None` data type and return a new
-                       Linked List, else it will use the given Linked List.
-        3. append = This is a bool type parameter that sets in which (append or prepend. Here
-                    prepend is the default method) order nodes are going to be inserted
-                    into the Linked List (when a note empty Linked List is proved through)
-                    `head_node`.
+    There are mainly three types of Linked List -
+    1. Singly Linked List
+    2. Doubly Linked List
+    3. Circular Linked List
     """
 
-    new_node = Node(value, None)
+    def __init__(self) -> None:
+        self.__length = 0
+        self.__head = self.__tail = None
 
-    if head_node != None:
-        match append:
-            case False:  # prepend
-                new_node.node = head_node
-                head_node = new_node
+    def size(self) -> int:
+        """
+        `size()`: This method returns the number of elements that exist in the linked list.
+        """
+        return self.__length
 
-            case True:  # append
-                tmp = head_node
-                while tmp.node != None:
-                    tmp = tmp.node
-                tmp.node = new_node
+    def isEmpty(self):
+        """
+        `isEmpty()`: This method determines whether the Linked List is empty or not.
+        """
+        return self.__head is None
 
-    else:
-        head_node = new_node
-
-    return head_node
-
-
-def insert_at(value, head_node: Node, position: int):
-    new_node = Node(value, None)
-    count = 1
-    length = ll_len(head_node)
-    tmp = head_node
-
-    if length == 0:
-        print("Linked List is Empty!")
-        print(
-            f"So, the input going to be inserted as the first node, not at the position {position}"
-        )
-        return insert(value=value)
-    else:
-        while position <= 0 or position > length + 1:
-            print(
-                "Position can not be lesser than 0 or greater than the Linked List +1 length."
-            )
-            position = input2(
-                "Enter positon: ",
-                try_again_msg="Position must be a decimal",
-                type="int",
-            )
-
-        if position == 1:
-            head_node = insert(value=value, head_node=head_node, append=False)
-            return head_node
-        elif position == length + 1:
-            head_node = insert(value=value, head_node=head_node, append=True)
-            return head_node
-
-        while tmp.node != None:
-            if count == position - 1:
-                new_node.node = tmp.node
-                tmp.node = new_node
-                break
-
-            else:
-                tmp = tmp.node
-                count += 1
-
-    return head_node
-
-
-def delete(value, head_node: Node):
-    if head_node != None:
-        curr = head_node
-
-        if head_node.value == value:
-            tmp = head_node
-            head_node = head_node.node
-            del tmp
-
-            return head_node
-
-        while curr.node != None:
-            if curr.node.value == value:
-                tmp = curr.node
-                curr.node = curr.node.node
-                del tmp
-                break
-            else:
-                curr = curr.node
+    def prepend(self, value):
+        """
+        `prepend(value)`: Prepend method inserts a new node at the top of the Linked List and
+                          sets that new node as the new head. It takes one input, which is the
+                          data that is going to be stored in the new node.
+        """
+        if self.__head == None:
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__tail = self.__head
+            self.__length += 1
         else:
-            print(f"Value: {value} not found!")
-    else:
-        print("Linked List is empty!")
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__length += 1
 
-    return head_node
+    def append(self, value):
+        """
+        `append(value)`: Append method inserts a new node at the end of the Linked List and
+                         sets that new node as the new tail, whose next node is `None`.
+                         It takes one input, which is the data that is going to be stored
+                         in the new node.
+        """
+        if self.__head == None:
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__tail = self.__head
+            self.__length += 1
+        else:
+            self.__tail.next = Node(data=value, next_node=None)
+            self.__tail = self.__tail.next
+            self.__length += 1
 
+    def insert(self, index, value) -> bool:
+        """
+        `insert(index, value)`: This method inserts a new node at the given position of the
+                                Linked List. Positions start at 1, so index 1 inserts at the
+                                head and index `size() + 1` inserts at the end. On an empty
+                                list only index 1 is valid.
 
-def insert_method() -> bool:
-    while True:
-        print("Pick a method:")
-        print("\t1. Prepend\t2. Append")
-        order_method = input2(
-            "..> ", try_again_msg="Input must be a decimal", type="int"
-        )
-
-        match order_method:
-            case 1:
+        Returns `True` if the node was inserted. Returns `False` (and leaves the list
+        unchanged) if the index is less than 1 or greater than `size() + 1`.
+        """
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+            if index > self.size() + 1 or index <= 0:
                 return False
-            case 2:
+            elif index == 1:
+                self.prepend(value=value)
                 return True
-            case _:
-                print("Select a correct option [1 or 2].")
+            elif index == self.size() + 1:
+                self.append(value=value)
+                return True
+            else:
+                while curr_index != index - 1:
+                    curr = curr.next
+                    curr_index += 1
+                curr.next = Node(value, curr.next)
+                self.__length += 1
+                return True
+        elif self.__head is None and index == 1:
+            self.prepend(value=value)
+            return True
+        else:
+            return False
 
+    def delete(self, value) -> bool:
+        """
+        `delete(value)`: Delete method removes the first node whose data equals `value`,
+                         found while traversing from the head to the tail.
 
-if __name__ == "__main__":
-    print("Linked List:")
-    value = input2("Enter a value: ")
-    sn: Node = insert(value=value)
+        Returns `True` if a node was removed. Returns `False` if the list is empty or the
+        value is not found.
+        """
+        if self.__head != None:
+            if self.__head == self.__tail and self.__head.data == value:
+                # tmp = self.__head
+                self.__head = None
+                self.__tail = None
+                self.__length -= 1
+                return True
 
-    method: bool = insert_method()
+            elif self.__head.data == value:
+                # curr = self.__head
+                self.__head = self.__head.next
+                self.__length -= 1
+                return True
 
-    while True:
-        print_list(head_node=sn)
-        print(f"Length: {ll_len(head_node=sn)}")
+            else:
+                curr = self.__head
+                while curr.next is not None:
+                    if curr.next.data == value:
+                        # tmp = curr.next
+                        curr.next = curr.next.next
+                        if curr.next is None:
+                            self.__tail = curr
+                        self.__length -= 1
+                        return True
+                    else:
+                        curr = curr.next
 
-        print("Select-")
-        print("\t1. Insert\n\t2. Insert at\n\t3. Delete\n\t4. Stop")
-        option = input2("..> ", try_again_msg="Input must be a decimal", type="int")
+        return False
 
-        match option:
-            case 1:
-                value = input2("Enter a value: ")
-                sn = insert(value=value, head_node=sn, append=method)
-            case 2:
-                value = input2("Enter a value: ")
-                inset_pos: int = input2(
-                    "Enter positon: ",
-                    try_again_msg="Position must be a decimal",
-                    type="int",
-                )
-                sn = insert_at(value=value, head_node=sn, position=inset_pos)
-            case 3:
-                value = input2(
-                    "Enter the value: ",
-                    try_again_msg="Enter a value which you want to remove",
-                )
-                sn = delete(value=value, head_node=sn)
-            case 4:
-                sys.exit()
-            case _:
-                print("Select a correct option [1,2,3 or 4].")
+    def delete_at(self, index):
+        """
+        `delete_at(index)`: Delete at method removes the node at the given position.
+                            Positions start at 1, so index 1 removes the head and index
+                            `size()` removes the tail.
+
+        Returns the data if a node was removed. Returns `None` (and leaves the list
+        unchanged) if the list is empty or the index is less than 1 or greater than `size()`.
+        """
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+            if index > self.size() or index <= 0:
+                return None
+            elif index == 1:
+                tmp_data = self.__head.data
+                self.delete(self.__head.data)
+                return tmp_data
+            elif index == self.size():
+                while curr.next != self.__tail:
+                    curr = curr.next
+                tmp = curr.next
+                self.__tail = curr
+                curr.next = None
+                self.__length -= 1
+                return tmp.data
+
+            else:
+                while curr_index != index - 1:
+                    curr = curr.next
+                    curr_index += 1
+                tmp = curr.next
+                curr.next = curr.next.next
+                self.__length -= 1
+                return tmp.data
+        else:
+            return None
+
+    def display(self) -> str:
+        """
+        `display()`: This method returns all the data as a string separated by commas.
+                     An empty list returns an empty string.
+
+        WARNING: This method may crash or produce an error for data that can't be converted
+        into a string.
+        """
+        retn_str = ""
+        if not self.isEmpty():
+            tmp = self.__head
+            while tmp != None:
+                retn_str += str(tmp.data)
+                if tmp.next != None:
+                    retn_str += ", "
+                tmp = tmp.next
+
+        return retn_str
+
+    def first(self):
+        """
+        `first()`: Returns `None` if the list is empty else the data.
+        """
+        return None if self.__head is None else self.__head.data
+
+    def last(self):
+        """
+        `last()`: Returns `None` if the list is empty else the data.
+        """
+        return None if self.__tail is None else self.__tail.data
+
+    def get(self, index):
+        """
+        `get(index)`: Returns the data of the node at the given index, and returns `None`
+                      if it is empty or it doesn't exist.
+        """
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+
+            if index > self.size() or index <= 0:
+                return None
+            elif index == 1:
+                return self.__head.data
+            elif index == self.size():
+                return self.__tail.data
+            else:
+                while curr_index != index:
+                    curr = curr.next
+                    curr_index += 1
+
+                return curr.data
+        else:
+            return None
+
+    def as_list(self) -> list:
+        """
+        `as_list()`: Converts the Linked List to a `list` and returns it.
+        """
+
+        retn_list = []
+        curr = self.__head
+
+        while curr != None:
+            retn_list.append(curr.data)
+            curr = curr.next
+
+        return retn_list

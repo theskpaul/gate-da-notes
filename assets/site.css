@@ -502,3 +502,12 @@ a.lcard:hover,a.lcard:focus-visible{
 .spd-btn:hover{background:var(--accent-soft);color:var(--accent-ink)}
 .spd-btn.is-on{background:var(--accent);color:var(--gp-on-accent)}
 @media(max-width:520px){ .spd{margin-left:0;width:100%;justify-content:space-between} }
+
+/* ---------- implementation tabs (same structure, different backing store) ---------- */
+.impltabs{display:inline-flex;border:1px solid var(--line-strong);border-radius:99px;overflow:hidden;
+  margin:2px 0 24px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.impltab{padding:8px 18px;font-size:.82rem;font-weight:650;color:var(--muted);text-decoration:none;
+  transition:background .15s ease,color .15s ease}
+.impltab:hover{background:var(--accent-soft);color:var(--accent-ink);text-decoration:none}
+.impltab.is-on{background:var(--accent);color:var(--gp-on-accent)}
+@media(max-width:520px){ .impltabs{display:flex;width:100%} .impltab{flex:1;text-align:center;padding:8px 10px} }

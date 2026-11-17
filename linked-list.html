@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=21"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Linked List · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=22"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap"><p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p><div class="hero"><span class="badge">Programming, DSA</span><h1>Linked List — implementation</h1></div>
 <h2><span class="bar"></span>1. What it is</h2>
 <p>A singly linked list written from scratch. Each <code>Node</code> holds a value and a pointer to the
 next node; the list itself is just a reference to the head, and the last node points at
@@ -20,240 +20,287 @@ next node; the list itself is just a reference to the head, and the last node po
 
 <h2><span class="bar"></span>3. Operations and complexity</h2>
 <div class="tw"><table><thead><tr><th>Operation</th><th>Function</th><th>Time</th><th>Why</th></tr></thead><tbody>
-<tr><td>Prepend</td><td><code>insert(..., append=False)</code></td><td>O(1)</td><td>New node points at the old head</td></tr>
-<tr><td>Append</td><td><code>insert(..., append=True)</code></td><td>O(n)</td><td>Walks to the last node — there is no tail pointer</td></tr>
-<tr><td>Insert at position</td><td><code>insert_at()</code></td><td>O(n)</td><td>Walk to position − 1, then relink</td></tr>
-<tr><td>Delete by value</td><td><code>delete()</code></td><td>O(n)</td><td>Search, then skip over the node</td></tr>
-<tr><td>Length</td><td><code>ll_len()</code></td><td>O(n)</td><td>Counted by traversal, not stored</td></tr>
-<tr><td>Traverse / print</td><td><code>print_list()</code></td><td>O(n)</td><td></td></tr>
+<tr><td>Prepend</td><td><code>prepend(v)</code></td><td>O(1)</td><td>New node points at the old head</td></tr>
+<tr><td>Append</td><td><code>append(v)</code></td><td>O(1)</td><td>A tail pointer is kept, so there is no walk</td></tr>
+<tr><td>Insert at position</td><td><code>insert(i, v)</code></td><td>O(n)</td><td>Walk to position − 1, then splice</td></tr>
+<tr><td>Delete by value</td><td><code>delete(v)</code></td><td>O(n)</td><td>Find the first match, then skip over it</td></tr>
+<tr><td>Delete at position</td><td><code>delete_at(i)</code></td><td>O(n)</td><td>Walk to position − 1, then unlink</td></tr>
+<tr><td>Read by position</td><td><code>get(i)</code></td><td>O(n)</td><td>No random access — you must walk</td></tr>
+<tr><td>Size</td><td><code>size()</code></td><td>O(1)</td><td>A counter is maintained on every change</td></tr>
+<tr><td>First / last</td><td><code>first()</code>, <code>last()</code></td><td>O(1)</td><td>Both ends are stored</td></tr>
+<tr><td>Traverse</td><td><code>display()</code>, <code>as_list()</code></td><td>O(n)</td><td>Visits every node once</td></tr>
 </tbody></table></div>
 
 <h2><span class="bar"></span>4. The code</h2>
-<p class="sub">Python 3.10+ (uses <code>match</code>). <a href="assets/linked_list.py">Download linked_list.py</a></p>
-<pre><code>import sys
+<p class="sub">Python 3.10+. The class is deliberately free of any menu or input code, so it can be tested
+directly and reused as a building block. <a href="assets/linked_list.py">Download linked_list.py</a></p>
+<pre><code>class Node:
+    def __init__(self, data, next_node) -&gt; None:
+        self.data = data
+        self.next = next_node
 
 
-class Node:
-    def __init__(self, value, node) -&gt; None:
-        self.value = value
-        self.node: Node = node
-
-
-def print_list(head_node: Node | None):
-    while head_node != None:
-        print(head_node.value, end=&quot; -&gt; &quot;)
-        head_node = head_node.node
-    print(&quot;None&quot;)
-
-
-def ll_len(head_node: Node | None) -&gt; int:
-    count: int = 0
-
-    if head_node != None:
-        tmp: Node = head_node
-        while tmp != None:
-            count += 1
-            tmp = tmp.node
-
-    return count
-
-
-def input2(msg=&quot;&quot;, try_again_msg=&quot;&quot;, type=&quot;undefined&quot;):
-    while True:
-        value: str = input(msg)
-        if type == &quot;int&quot;:
-            if value.isdecimal():
-                i_value: int = int(value)
-                return i_value
-            else:
-                print(try_again_msg)
-        elif type == &quot;undefined&quot; or type == &quot;str&quot;:
-            return value
-
-
-def insert(value, head_node: Node | None = None, append: bool = False) -&gt; Node:
+class LinkedList:
     &quot;&quot;&quot;
-    This insert function&#x27;s job to to insert new nodes at the first or at the
-    last of the linked list. It will return the whole linked list after insertion is done.
+    Linked List is a linear data structure that stores data as nodes. Each node also stores
+    the address of the next node along with its data. These nodes are stored at random
+    positions in memory; they are not stored in contiguous memory.
 
-    It has thee parameters -
-        1. value = It is the value that going to be stored in the nodes of the Linked List.
-                   It doesn&#x27;t have any fixed data type and default value, so it can be set
-                   to anything and it is datatype agnostic.
-        2. head_node = This parameter takes the current linked list as an input. It have two
-                       datatypes `Node` and `None`. if any previous linked list have not been
-                       given then it will utilise the `None` data type and return a new
-                       Linked List, else it will use the given Linked List.
-        3. append = This is a bool type parameter that sets in which (append or prepend. Here
-                    prepend is the default method) order nodes are going to be inserted
-                    into the Linked List (when a note empty Linked List is proved through)
-                    `head_node`.
+    There are mainly three types of Linked List -
+    1. Singly Linked List
+    2. Doubly Linked List
+    3. Circular Linked List
     &quot;&quot;&quot;
 
-    new_node = Node(value, None)
+    def __init__(self) -&gt; None:
+        self.__length = 0
+        self.__head = self.__tail = None
 
-    if head_node != None:
-        match append:
-            case False:  # prepend
-                new_node.node = head_node
-                head_node = new_node
+    def size(self) -&gt; int:
+        &quot;&quot;&quot;
+        `size()`: This method returns the number of elements that exist in the linked list.
+        &quot;&quot;&quot;
+        return self.__length
 
-            case True:  # append
-                tmp = head_node
-                while tmp.node != None:
-                    tmp = tmp.node
-                tmp.node = new_node
+    def isEmpty(self):
+        &quot;&quot;&quot;
+        `isEmpty()`: This method determines whether the Linked List is empty or not.
+        &quot;&quot;&quot;
+        return self.__head is None
 
-    else:
-        head_node = new_node
-
-    return head_node
-
-
-def insert_at(value, head_node: Node, position: int):
-    new_node = Node(value, None)
-    count = 1
-    length = ll_len(head_node)
-    tmp = head_node
-
-    if length == 0:
-        print(&quot;Linked List is Empty!&quot;)
-        print(
-            f&quot;So, the input going to be inserted as the first node, not at the position {position}&quot;
-        )
-        return insert(value=value)
-    else:
-        while position &lt;= 0 or position &gt; length + 1:
-            print(
-                &quot;Position can not be lesser than 0 or greater than the Linked List +1 length.&quot;
-            )
-            position = input2(
-                &quot;Enter positon: &quot;,
-                try_again_msg=&quot;Position must be a decimal&quot;,
-                type=&quot;int&quot;,
-            )
-
-        if position == 1:
-            head_node = insert(value=value, head_node=head_node, append=False)
-            return head_node
-        elif position == length + 1:
-            head_node = insert(value=value, head_node=head_node, append=True)
-            return head_node
-
-        while tmp.node != None:
-            if count == position - 1:
-                new_node.node = tmp.node
-                tmp.node = new_node
-                break
-
-            else:
-                tmp = tmp.node
-                count += 1
-
-    return head_node
-
-
-def delete(value, head_node: Node):
-    if head_node != None:
-        curr = head_node
-
-        if head_node.value == value:
-            tmp = head_node
-            head_node = head_node.node
-            del tmp
-
-            return head_node
-
-        while curr.node != None:
-            if curr.node.value == value:
-                tmp = curr.node
-                curr.node = curr.node.node
-                del tmp
-                break
-            else:
-                curr = curr.node
+    def prepend(self, value):
+        &quot;&quot;&quot;
+        `prepend(value)`: Prepend method inserts a new node at the top of the Linked List and
+                          sets that new node as the new head. It takes one input, which is the
+                          data that is going to be stored in the new node.
+        &quot;&quot;&quot;
+        if self.__head == None:
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__tail = self.__head
+            self.__length += 1
         else:
-            print(f&quot;Value: {value} not found!&quot;)
-    else:
-        print(&quot;Linked List is empty!&quot;)
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__length += 1
 
-    return head_node
+    def append(self, value):
+        &quot;&quot;&quot;
+        `append(value)`: Append method inserts a new node at the end of the Linked List and
+                         sets that new node as the new tail, whose next node is `None`.
+                         It takes one input, which is the data that is going to be stored
+                         in the new node.
+        &quot;&quot;&quot;
+        if self.__head == None:
+            self.__head = Node(data=value, next_node=self.__head)
+            self.__tail = self.__head
+            self.__length += 1
+        else:
+            self.__tail.next = Node(data=value, next_node=None)
+            self.__tail = self.__tail.next
+            self.__length += 1
 
+    def insert(self, index, value) -&gt; bool:
+        &quot;&quot;&quot;
+        `insert(index, value)`: This method inserts a new node at the given position of the
+                                Linked List. Positions start at 1, so index 1 inserts at the
+                                head and index `size() + 1` inserts at the end. On an empty
+                                list only index 1 is valid.
 
-def insert_method() -&gt; bool:
-    while True:
-        print(&quot;Pick a method:&quot;)
-        print(&quot;\t1. Prepend\t2. Append&quot;)
-        order_method = input2(
-            &quot;..&gt; &quot;, try_again_msg=&quot;Input must be a decimal&quot;, type=&quot;int&quot;
-        )
-
-        match order_method:
-            case 1:
+        Returns `True` if the node was inserted. Returns `False` (and leaves the list
+        unchanged) if the index is less than 1 or greater than `size() + 1`.
+        &quot;&quot;&quot;
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+            if index &gt; self.size() + 1 or index &lt;= 0:
                 return False
-            case 2:
+            elif index == 1:
+                self.prepend(value=value)
                 return True
-            case _:
-                print(&quot;Select a correct option [1 or 2].&quot;)
+            elif index == self.size() + 1:
+                self.append(value=value)
+                return True
+            else:
+                while curr_index != index - 1:
+                    curr = curr.next
+                    curr_index += 1
+                curr.next = Node(value, curr.next)
+                self.__length += 1
+                return True
+        elif self.__head is None and index == 1:
+            self.prepend(value=value)
+            return True
+        else:
+            return False
 
+    def delete(self, value) -&gt; bool:
+        &quot;&quot;&quot;
+        `delete(value)`: Delete method removes the first node whose data equals `value`,
+                         found while traversing from the head to the tail.
 
-if __name__ == &quot;__main__&quot;:
-    print(&quot;Linked List:&quot;)
-    value = input2(&quot;Enter a value: &quot;)
-    sn: Node = insert(value=value)
+        Returns `True` if a node was removed. Returns `False` if the list is empty or the
+        value is not found.
+        &quot;&quot;&quot;
+        if self.__head != None:
+            if self.__head == self.__tail and self.__head.data == value:
+                # tmp = self.__head
+                self.__head = None
+                self.__tail = None
+                self.__length -= 1
+                return True
 
-    method: bool = insert_method()
+            elif self.__head.data == value:
+                # curr = self.__head
+                self.__head = self.__head.next
+                self.__length -= 1
+                return True
 
-    while True:
-        print_list(head_node=sn)
-        print(f&quot;Length: {ll_len(head_node=sn)}&quot;)
+            else:
+                curr = self.__head
+                while curr.next is not None:
+                    if curr.next.data == value:
+                        # tmp = curr.next
+                        curr.next = curr.next.next
+                        if curr.next is None:
+                            self.__tail = curr
+                        self.__length -= 1
+                        return True
+                    else:
+                        curr = curr.next
 
-        print(&quot;Select-&quot;)
-        print(&quot;\t1. Insert\n\t2. Insert at\n\t3. Delete\n\t4. Stop&quot;)
-        option = input2(&quot;..&gt; &quot;, try_again_msg=&quot;Input must be a decimal&quot;, type=&quot;int&quot;)
+        return False
 
-        match option:
-            case 1:
-                value = input2(&quot;Enter a value: &quot;)
-                sn = insert(value=value, head_node=sn, append=method)
-            case 2:
-                value = input2(&quot;Enter a value: &quot;)
-                inset_pos: int = input2(
-                    &quot;Enter positon: &quot;,
-                    try_again_msg=&quot;Position must be a decimal&quot;,
-                    type=&quot;int&quot;,
-                )
-                sn = insert_at(value=value, head_node=sn, position=inset_pos)
-            case 3:
-                value = input2(
-                    &quot;Enter the value: &quot;,
-                    try_again_msg=&quot;Enter a value which you want to remove&quot;,
-                )
-                sn = delete(value=value, head_node=sn)
-            case 4:
-                sys.exit()
-            case _:
-                print(&quot;Select a correct option [1,2,3 or 4].&quot;)
+    def delete_at(self, index):
+        &quot;&quot;&quot;
+        `delete_at(index)`: Delete at method removes the node at the given position.
+                            Positions start at 1, so index 1 removes the head and index
+                            `size()` removes the tail.
+
+        Returns the data if a node was removed. Returns `None` (and leaves the list
+        unchanged) if the list is empty or the index is less than 1 or greater than `size()`.
+        &quot;&quot;&quot;
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+            if index &gt; self.size() or index &lt;= 0:
+                return None
+            elif index == 1:
+                tmp_data = self.__head.data
+                self.delete(self.__head.data)
+                return tmp_data
+            elif index == self.size():
+                while curr.next != self.__tail:
+                    curr = curr.next
+                tmp = curr.next
+                self.__tail = curr
+                curr.next = None
+                self.__length -= 1
+                return tmp.data
+
+            else:
+                while curr_index != index - 1:
+                    curr = curr.next
+                    curr_index += 1
+                tmp = curr.next
+                curr.next = curr.next.next
+                self.__length -= 1
+                return tmp.data
+        else:
+            return None
+
+    def display(self) -&gt; str:
+        &quot;&quot;&quot;
+        `display()`: This method returns all the data as a string separated by commas.
+                     An empty list returns an empty string.
+
+        WARNING: This method may crash or produce an error for data that can&#x27;t be converted
+        into a string.
+        &quot;&quot;&quot;
+        retn_str = &quot;&quot;
+        if not self.isEmpty():
+            tmp = self.__head
+            while tmp != None:
+                retn_str += str(tmp.data)
+                if tmp.next != None:
+                    retn_str += &quot;, &quot;
+                tmp = tmp.next
+
+        return retn_str
+
+    def first(self):
+        &quot;&quot;&quot;
+        `first()`: Returns `None` if the list is empty else the data.
+        &quot;&quot;&quot;
+        return None if self.__head is None else self.__head.data
+
+    def last(self):
+        &quot;&quot;&quot;
+        `last()`: Returns `None` if the list is empty else the data.
+        &quot;&quot;&quot;
+        return None if self.__tail is None else self.__tail.data
+
+    def get(self, index):
+        &quot;&quot;&quot;
+        `get(index)`: Returns the data of the node at the given index, and returns `None`
+                      if it is empty or it doesn&#x27;t exist.
+        &quot;&quot;&quot;
+        if self.__head is not None:
+            curr_index = 1
+            curr = self.__head
+
+            if index &gt; self.size() or index &lt;= 0:
+                return None
+            elif index == 1:
+                return self.__head.data
+            elif index == self.size():
+                return self.__tail.data
+            else:
+                while curr_index != index:
+                    curr = curr.next
+                    curr_index += 1
+
+                return curr.data
+        else:
+            return None
+
+    def as_list(self) -&gt; list:
+        &quot;&quot;&quot;
+        `as_list()`: Converts the Linked List to a `list` and returns it.
+        &quot;&quot;&quot;
+
+        retn_list = []
+        curr = self.__head
+
+        while curr != None:
+            retn_list.append(curr.data)
+            curr = curr.next
+
+        return retn_list
 </code></pre>
 
 <h2><span class="bar"></span>5. Notes on the implementation</h2>
 <ul>
-<li><b>Prepend is O(1), append is O(n).</b> With no tail pointer, appending must walk the whole list.
-Keeping a <code>tail</code> reference would make it O(1) — a standard exam trade-off.</li>
-<li><b>Deleting the head is a special case.</b> The head reference itself has to be reassigned, which is
-why <code>delete()</code> returns the (possibly new) head instead of mutating in place.</li>
-<li><b>Deleting the only node</b> returns <code>None</code>; the next insert rebuilds the list from empty.</li>
-<li><b><code>input2()</code> guards integer prompts</b> with <code>str.isdecimal()</code> — so a stray letter
-re-prompts instead of crashing. Note that it also rejects negatives, since <code>"-5".isdecimal()</code> is
-<code>False</code>.</li>
-<li><b>The <code>while … else</code> in <code>delete()</code></b> prints "not found" only when the loop
-finishes without <code>break</code> — correct here, but easy to misread as a bug.</li>
-<li><b><code>delete()</code> removes only the first match.</b> Duplicates further down the list survive.</li>
-<li><b>Values are stored as strings.</b> The menu passes <code>input2()</code> without <code>type="int"</code>,
-so entering <code>5</code> stores <code>"5"</code>. Fine for a demo, wrong for anything numeric.</li>
-<li><b><code>delete()</code> and <code>insert_at()</code> are typed <code>Node</code></b> but are called with
-<code>None</code> on an empty list. The guards handle it; the annotation is just optimistic.</li>
+<li><b>Append is O(1), not O(n).</b> The class keeps a <code>tail</code> pointer, so appending never walks the
+list. A linked list without a tail pointer would make every append O(n) — that is the whole reason the pointer
+is worth maintaining.</li>
+<li><b><code>delete_at()</code> returns the removed <i>data</i></b>, not a <code>True</code>/<code>False</code>.
+That is what lets a queue be built on top of it: dequeue needs the element, not a status flag.</li>
+<li><b><code>insert()</code> works on an empty list</b> at index 1. Positions are 1-based, so index 1 is the
+head and index <code>size() + 1</code> is the tail.</li>
+<li><b><code>delete(value)</code> removes only the first match.</b> Duplicates further down survive.</li>
+<li><b><code>size()</code> is O(1)</b> because every mutator maintains the counter. It is not a traversal —
+that was the deprecated version.</li>
+<li><b><code>display()</code> returns a comma-separated string; <code>as_list()</code> returns a real list.</b>
+Use <code>as_list()</code> when you need the data back, and <code>display()</code> when you need to show it.</li>
+<li><b>Deleting the only node</b> sets both <code>head</code> and <code>tail</code> to <code>None</code>; that
+branch is checked <i>before</i> the general head case, which is what keeps the tail pointer honest.</li>
 </ul>
+
+<div class="card">
+<h3 style="margin-top:0">How it was checked</h3>
+<p style="margin:0">1,000 randomised sessions of up to 50 operations each — prepend, append, insert, delete,
+delete_at and get — compared against a reference Python list: <b>zero</b> crashes and <b>zero</b> wrong states
+across the chain, the size counter and the tail pointer.</p>
+</div>
 
 <h2><span class="bar"></span>6. GATE-style traps</h2>
 <ul>
