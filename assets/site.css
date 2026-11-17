@@ -511,3 +511,40 @@ a.lcard:hover,a.lcard:focus-visible{
 .impltab:hover{background:var(--accent-soft);color:var(--accent-ink);text-decoration:none}
 .impltab.is-on{background:var(--accent);color:var(--gp-on-accent)}
 @media(max-width:520px){ .impltabs{display:flex;width:100%} .impltab{flex:1;text-align:center;padding:8px 10px} }
+
+/* ---------- code blocks: highlighting, line numbers, copy ---------- */
+:root{--font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre,code,pre code{font-family:var(--font-mono)}
+.codeblock{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;
+  margin:16px 0;box-shadow:var(--shadow-sm);background:var(--surface)}
+.codebar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:7px 12px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.codelang{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.copybtn{font:inherit;font-size:.74rem;font-weight:650;padding:4px 13px;border-radius:99px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);cursor:pointer;
+  transition:background .15s ease,border-color .15s ease,color .15s ease}
+.copybtn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.copybtn.ok{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.codewrap{display:flex;align-items:flex-start;overflow-x:auto;background:var(--surface)}
+.lnums{position:sticky;left:0;z-index:1;flex:none;padding:14px 10px 14px 14px;text-align:right;
+  color:var(--muted);background:var(--surface);border-right:1px solid var(--line);
+  user-select:none;white-space:pre;line-height:1.65;font-size:.8rem}
+.codepre{flex:1;margin:0;padding:14px 16px;border:0;box-shadow:none;background:none;
+  font-size:.8rem;line-height:1.65;white-space:pre;overflow:visible}
+.codepre code{background:none;border:0;padding:0;color:inherit;font-size:1em}
+.tok-com{color:#8b8477;font-style:italic}
+.tok-str{color:#2f6f4a}
+.tok-num{color:#9a6a1c}
+.tok-kw{color:#8a4b9c;font-weight:600}
+.tok-defn{color:#1f5f9c;font-weight:650}
+.tok-bi{color:#1f5f9c}
+.tok-dec{color:#9a6a1c}
+@media(prefers-color-scheme:dark){
+  .tok-com{color:#7d8794;font-style:italic}
+  .tok-str{color:#84d6a8}
+  .tok-num{color:#e0ad4a}
+  .tok-kw{color:#c99cf0;font-weight:600}
+  .tok-defn{color:#7fb6f0;font-weight:650}
+  .tok-bi{color:#7fb6f0}
+  .tok-dec{color:#e0ad4a}
+}
