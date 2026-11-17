@@ -1,0 +1,141 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Stack — linked list · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=23"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+
+<p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p>
+<div class="hero"><span class="badge">Programming, DSA</span><h1>Stack — linked-list backed</h1></div>
+<div class="impltabs"><a class="impltab" href="stack.html">Array-backed</a><a class="impltab is-on" href="stack-linked.html">Linked-list backed</a></div>
+<p class="lede" style="margin:-8px 0 26px">Same LIFO contract as the array-backed stack, built on the
+<code>LinkedList</code> class instead. <a href="linked-list.html">That class is here</a>.</p>
+
+<h2><span class="bar"></span>1. What it is</h2>
+<p>A stack is <b>LIFO</b> — last in, first out. What changes here is only the <b>backing store</b>: the elements
+live in a linked list, and the stack is a thin wrapper. <code>push</code> appends at the tail,
+<code>pop</code> removes the tail.</p>
+
+<h2><span class="bar"></span>2. How the operations work</h2>
+<p>Each step shows the stack after one operation. The highlighted box is the top.</p>
+<div class="stk" id="stackplayer">
+ <p class="stk-caption"></p>
+ <div class="stk-stage"></div>
+ <div class="stk-bar">
+  <button class="stk-play" type="button">Play</button>
+  <button class="stk-step" type="button">Step</button>
+  <button class="stk-reset" type="button">Reset</button>
+  <span class="spd" role="group" aria-label="Animation speed"><button class="spd-btn" type="button" data-speed="0.5">0.5&times;</button><button class="spd-btn is-on" type="button" data-speed="1">1&times;</button><button class="spd-btn" type="button" data-speed="2">2&times;</button><button class="spd-btn" type="button" data-speed="4">4&times;</button></span>
+ </div>
+</div>
+<script type="application/json" id="stack-data">{"steps": [{"s": [], "hi": -1, "cap": "Empty stack, backed by an empty linked list."}, {"s": ["5"], "hi": 0, "cap": "push 5 \u2014 appended at the tail of the list, which is the top of the stack. O(1)."}, {"s": ["5", "1"], "hi": 1, "cap": "push 1 \u2014 again at the tail. O(1)."}, {"s": ["5", "1", "9"], "hi": 2, "cap": "push 9 \u2014 every push lands on top; the older elements sink."}, {"s": ["5", "1", "9", "3"], "hi": 3, "cap": "push 3 \u2014 four deep. Only the top is reachable."}, {"s": ["5", "1", "9", "3"], "hi": 3, "cap": "peek \u2014 reads the tail of the list (3) without removing it. O(1)."}, {"s": ["5", "1", "9"], "hi": 2, "cap": "pop \u2014 removes the tail node and returns its data. This is delete_at(size()), which walks the list: O(n)."}, {"s": ["5", "1"], "hi": 1, "cap": "pop \u2014 removes 9. LIFO: the last one in is the first one out."}, {"s": ["5", "1", "7"], "hi": 2, "cap": "push 7 \u2014 straight onto the top. O(1)."}, {"s": ["5", "1"], "hi": 1, "cap": "pop \u2014 removes 7."}, {"s": ["5"], "hi": 0, "cap": "pop \u2014 removes 1."}, {"s": [], "hi": -1, "cap": "pop \u2014 removes 5. Head and tail both become None."}, {"s": [], "hi": -1, "cap": "pop on an empty stack \u2014 underflow. Returns None, which can only mean empty."}]}</script>
+
+<h2><span class="bar"></span>3. Operations and complexity</h2>
+<div class="tw"><table><thead><tr><th>Operation</th><th>Delegates to</th><th>Time</th></tr></thead><tbody>
+<tr><td>push</td><td><code>LinkedList.append()</code></td><td><b>O(1)</b></td></tr>
+<tr><td>pop</td><td><code>LinkedList.delete_at(size())</code></td><td><b>O(n)</b> — see below</td></tr>
+<tr><td>peek</td><td><code>LinkedList.last()</code></td><td>O(1)</td></tr>
+<tr><td>size</td><td><code>LinkedList.size()</code></td><td>O(1)</td></tr>
+<tr><td>isEmpty</td><td><code>LinkedList.isEmpty()</code></td><td>O(1)</td></tr>
+<tr><td>display</td><td><code>LinkedList.as_list()</code></td><td>O(n)</td></tr>
+</tbody></table></div>
+
+<div class="card accent">
+<h3 style="margin-top:0">Pop is O(n) here — and that is worth understanding</h3>
+<p>Pushing at the tail is O(1) because the list keeps a tail pointer. But <b>popping</b> the tail is not:
+a singly linked list has no backward pointer, so removing the last node means walking from the head to the
+second-to-last node first. That walk is <code>delete_at(size())</code>, and it is O(n).</p>
+<p style="margin:0">Measured — draining the whole stack:</p>
+<div class="tw"><table><thead><tr><th>n</th><th>Array-backed</th><th>Linked-list backed</th></tr></thead><tbody>
+<tr><td>2,000</td><td>0.002 s</td><td>0.189 s</td></tr>
+<tr><td>8,000</td><td>0.006 s</td><td>2.500 s</td></tr>
+</tbody></table></div>
+<p style="margin:0"><b>Make it O(1):</b> push and pop at the <i>head</i> instead — <code>prepend()</code> and
+<code>delete_at(1)</code>, both O(1). The observable LIFO behaviour is identical; only the order in which
+<code>display()</code> lists the elements changes.</p>
+</div>
+
+<h2><span class="bar"></span>4. The code</h2>
+<p class="sub">Python 3.10+. Needs <code>LinkedListImpl.py</code> alongside it.
+<a href="assets/stack_linked.py">Download stack_linked.py</a> ·
+<a href="assets/linked_list.py">download linked_list.py</a></p>
+<pre><code>from LinkedListImpl import LinkedList
+
+
+class Stack:
+    def __init__(self):
+        self.__stack: LinkedList = LinkedList()
+
+    def size(self):
+        &quot;&quot;&quot;
+        `size()`: Returns the size of the stack.
+        &quot;&quot;&quot;
+        return self.__stack.size()
+
+    def isEmpty(self) -&gt; bool:
+        &quot;&quot;&quot;
+        `isEmpty()`: Returns whether the stack is empty.
+        &quot;&quot;&quot;
+        return self.__stack.isEmpty()
+
+    def push(self, value):
+        &quot;&quot;&quot;
+        `push()`: Inserts a new element in the stack.
+        &quot;&quot;&quot;
+        if value is None:
+            raise ValueError(&quot;stack does not accept None&quot;)
+        else:
+            self.__stack.append(value)
+
+    def pop(self):
+        &quot;&quot;&quot;
+        `pop()`: Removes the top element of the stack and returns it, or `None` if empty.
+        &quot;&quot;&quot;
+        if self.size() == 0:
+            return None
+        else:
+            return self.__stack.delete_at(self.size())
+
+    def peek(self):
+        &quot;&quot;&quot;
+        `peek()`: Returns the top element of the stack, and `None` if empty.
+        &quot;&quot;&quot;
+        return self.__stack.last()
+
+    def display(self):
+        &quot;&quot;&quot;
+        `display()`: Returns all the elements in the stack.
+        &quot;&quot;&quot;
+        return self.__stack.as_list()
+</code></pre>
+
+<h2><span class="bar"></span>5. Notes on the implementation</h2>
+<ul>
+<li><b>It is a wrapper, not a reimplementation.</b> Every method delegates to the linked list. The stack owns
+the <i>rules</i> (LIFO, no <code>None</code>); the list owns the <i>mechanics</i>.</li>
+<li><b><code>pop()</code> calls <code>delete_at(size())</code></b> — the last position. <code>delete_at</code>
+returns the removed <i>data</i>, which is what lets <code>pop()</code> hand the element back.</li>
+<li><b><code>peek()</code> uses <code>last()</code></b>, which reads the tail pointer directly — O(1), no walk.</li>
+<li><b><code>None</code> is rejected on push</b>, so <code>None</code> from <code>pop()</code> can only mean
+"empty".</li>
+<li><b>Chose the tail as the top</b> so that <code>display()</code> lists elements bottom-to-top, matching the
+array-backed version. The cost is the O(n) pop described above.</li>
+</ul>
+
+<div class="card">
+<h3 style="margin-top:0">How it was checked</h3>
+<p style="margin:0">800 randomised sessions of up to 40 operations — push, pop, peek, size, isEmpty and display
+— compared against a reference Python list: <b>zero</b> crashes and <b>zero</b> mismatches.</p>
+</div>
+
+<h2><span class="bar"></span>6. GATE-style traps</h2>
+<ul>
+<li><b>Underflow.</b> Popping an empty stack — returns <code>None</code> here; <code>list.pop()</code> would
+raise <code>IndexError</code>.</li>
+<li><b>Which end is the top?</b> A stack pushes and pops at the <i>same</i> end. If it pushes at one end and
+pops from the other, it is a queue.</li>
+<li><b>Linked-list stack: which end to choose.</b> Head is the right answer for a singly linked list — both
+operations are O(1). Tail gives O(1) push but O(n) pop.</li>
+<li><b>Array stack: O(1) amortised push.</b> The occasional resize is O(n), spread across the pushes that
+caused it.</li>
+<li><b>Recursion is a stack.</b> Call frames push and pop; deep recursion overflows the call stack.</li>
+<li><b>A stack from two queues</b> is possible but costs O(n) per pop — the mirror image of building a queue
+from two stacks, which is amortised O(1).</li>
+</ul>
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=5" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script src="assets/urgency.js?v=9" defer></script><script src="assets/stackplayer.js?v=2" defer></script></body></html>

@@ -1,7 +1,8 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Stack · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=22"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>Stack · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=23"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
 <p class="crumb"><a href="index.html">Index</a> › Programming, DSA</p>
-<div class="hero"><span class="badge">Programming, DSA</span><h1>Stack — implementation</h1></div>
+<div class="hero"><span class="badge">Programming, DSA</span><h1>Stack — array-backed</h1></div>
 
+<div class="impltabs"><a class="impltab is-on" href="stack.html">Array-backed</a><a class="impltab" href="stack-linked.html">Linked-list backed</a></div>
 <h2><span class="bar"></span>1. What it is</h2>
 <p>A stack is <b>LIFO</b> — last in, first out. Only the top is reachable: you push onto it and pop from it,
 and there is no way to touch anything underneath. Here it is built on a Python list, where
@@ -21,88 +22,87 @@ and there is no way to touch anything underneath. Here it is built on a Python l
 <script type="application/json" id="stack-data">{"steps": [{"s": [], "hi": -1, "cap": "Empty stack. Nothing to pop or peek."}, {"s": ["5"], "hi": 0, "cap": "Push 5 \u2014 appended at the top. O(1)."}, {"s": ["5", "1"], "hi": 1, "cap": "Push 1 \u2014 it becomes the new top. O(1)."}, {"s": ["5", "1", "9"], "hi": 2, "cap": "Push 9 \u2014 every push lands on top; the older elements sink."}, {"s": ["5", "1", "9", "3"], "hi": 3, "cap": "Push 3 \u2014 four deep. Only the top is reachable."}, {"s": ["5", "1", "9", "3"], "hi": 3, "cap": "Peek \u2014 reads the top (3) without removing it. O(1)."}, {"s": ["5", "1", "9"], "hi": 2, "cap": "Pop \u2014 removes 3 and returns it. Top is now 9."}, {"s": ["5", "1"], "hi": 1, "cap": "Pop \u2014 removes 9. LIFO: the last one in is the first one out."}, {"s": ["5", "1", "7"], "hi": 2, "cap": "Push 7 \u2014 a new element goes straight to the top."}, {"s": ["5", "1"], "hi": 1, "cap": "Pop \u2014 removes 7."}, {"s": ["5"], "hi": 0, "cap": "Pop \u2014 removes 1."}, {"s": [], "hi": -1, "cap": "Pop \u2014 removes 5. The stack is empty."}, {"s": [], "hi": -1, "cap": "Pop on an empty stack \u2014 underflow. The guard prints \"Stack is empty!\" instead of crashing."}]}</script>
 
 <h2><span class="bar"></span>3. Operations and complexity</h2>
-<div class="tw"><table><thead><tr><th>Operation</th><th>How</th><th>Time</th></tr></thead><tbody>
-<tr><td>Push</td><td><code>stack.append(v)</code></td><td>O(1)</td></tr>
-<tr><td>Pop</td><td><code>stack.pop()</code></td><td>O(1)</td></tr>
-<tr><td>Peek / top</td><td><code>stack[-1]</code></td><td>O(1)</td></tr>
-<tr><td>isEmpty</td><td><code>len(stack) == 0</code></td><td>O(1)</td></tr>
-<tr><td>Search</td><td>scan the whole stack</td><td>O(n)</td></tr>
+<div class="tw"><table><thead><tr><th>Operation</th><th>Delegates to</th><th>Time</th></tr></thead><tbody>
+<tr><td>push</td><td><code>list.append(v)</code></td><td>O(1) amortised</td></tr>
+<tr><td>pop</td><td><code>list.pop()</code></td><td>O(1)</td></tr>
+<tr><td>peek</td><td><code>list[-1]</code></td><td>O(1)</td></tr>
+<tr><td>size</td><td><code>len(list)</code></td><td>O(1)</td></tr>
+<tr><td>isEmpty</td><td><code>size() == 0</code></td><td>O(1)</td></tr>
+<tr><td>display</td><td><code>list(...)</code></td><td>O(n)</td></tr>
 </tbody></table></div>
 
 <h2><span class="bar"></span>4. The code</h2>
-<p class="sub">Python 3.10+ (uses <code>match</code>). <a href="assets/stack.py">Download stack.py</a></p>
-<pre><code>import sys
+<p class="sub">Python 3.10+. A pure data structure — no menu, no input handling.
+<a href="assets/stack.py">Download stack.py</a></p>
+<pre><code>class Stack:
+    def __init__(self):
+        self.__stack: list = []
 
+    def size(self):
+        &quot;&quot;&quot;
+        `size()`: Returns the size of the stack.
+        &quot;&quot;&quot;
+        return len(self.__stack)
 
-def print_stack(s: list):
-    if len(s) == 0:
-        print(&quot;Empty Stack!&quot;)
-    else:
-        print(f&quot;Stack: {s}&quot;)
+    def isEmpty(self) -&gt; bool:
+        &quot;&quot;&quot;
+        `isEmpty()`: Returns whether the stack is empty.
+        &quot;&quot;&quot;
+        return self.size() == 0
 
+    def push(self, value):
+        &quot;&quot;&quot;
+        `push()`: Inserts a new element in the stack.
+        &quot;&quot;&quot;
+        if value is None:
+            raise ValueError(&quot;stack does not accept None&quot;)
+        else:
+            self.__stack.append(value)
 
-if __name__ == &quot;__main__&quot;:
-    stack = []
+    def pop(self):
+        &quot;&quot;&quot;
+        `pop()`: Removes the top element of the stack and returns it, or `None` if empty.
+        &quot;&quot;&quot;
+        if self.size() == 0:
+            return None
+        else:
+            return self.__stack.pop()
 
-    while True:
-        print_stack(stack)
-        print(&quot;1. Push&quot;)
-        print(&quot;2. Pop&quot;)
-        print(&quot;3. Peek&quot;)
-        print(&quot;4. isEmpty&quot;)
-        print(&quot;5. Exit&quot;)
-        option = input(&quot;&gt;&gt; &quot;).strip()
+    def peek(self):
+        &quot;&quot;&quot;
+        `peek()`: Returns the top element of the stack, and `None` if empty.
+        &quot;&quot;&quot;
+        return None if not self.__stack else self.__stack[-1]
 
-        match option:
-            case &quot;1&quot;:
-                inp = input(&quot;Enter a value: &quot;)
-                stack.append(inp)
-            case &quot;2&quot;:
-                if len(stack) &gt; 0:
-                    tmp = stack[-1]
-                    stack.pop()
-                    print(f&quot;{tmp} popped!&quot;)
-                else:
-                    print(&quot;Stack is empty!&quot;)
-            case &quot;3&quot;:
-                if len(stack) &gt; 0:
-                    print(f&quot;Top value: {stack[-1]}&quot;)
-                else:
-                    print(&quot;Stack is empty!&quot;)
-
-            case &quot;4&quot;:
-                if len(stack) &gt; 0:
-                    print(&quot;Stack is not empty!&quot;)
-                else:
-                    print(&quot;Stack is empty!&quot;)
-            case &quot;5&quot;:
-                sys.exit()
-            case _:
-                print(&quot;Select a option number between 1 to 5!&quot;)
+    def display(self):
+        &quot;&quot;&quot;
+        `display()`: Returns all the elements in the stack.
+        &quot;&quot;&quot;
+        return list(self.__stack)
 </code></pre>
 
 <h2><span class="bar"></span>5. Notes on the implementation</h2>
 <ul>
-<li><b>Underflow is guarded.</b> Pop and peek both check the length first, so an empty stack prints
-"Stack is empty!" rather than raising <code>IndexError</code>.</li>
-<li><b>The menu input is stripped.</b> <code>input("&gt;&gt; ").strip()</code> means a stray leading or trailing
-space no longer breaks the menu — without it, typing <code> 1</code> or <code>5 </code> silently failed.</li>
-<li><b>Values are stored as strings.</b> <code>input()</code> returns <code>str</code>, so the stack holds
-<code>'5'</code>, not <code>5</code>. Fine for a demo; wrong for anything numeric.</li>
-<li><b>Zero-padded and signed input is still rejected</b> — <code>01</code> and <code>+1</code> fall through to the
-invalid-option message, because the match is on the raw string.</li>
+<li><b>Push and pop work at the same end.</b> That is the entire difference from a queue. A Python list gives
+you that for free: <code>append()</code> and <code>pop()</code> both act at the end.</li>
+<li><b>Push is O(1) <i>amortised</i>.</b> A dynamic array occasionally reallocates and copies, which is O(n) —
+but spread over the pushes that caused it, each push is O(1).</li>
+<li><b><code>peek()</code> must test the list, not <code>is None</code>.</b> The backing list is always a list,
+never <code>None</code>, so <code>if self.__stack is None</code> never fires and <code>self.__stack[-1]</code>
+raises <code>IndexError</code> on an empty stack. <code>if not self.__stack</code> is the correct guard.</li>
+<li><b>Underflow returns <code>None</code>.</b> <code>pop()</code> and <code>peek()</code> check the size first.
+Python's own <code>list.pop()</code> would raise <code>IndexError</code> instead — know both conventions.</li>
+<li><b><code>None</code> is rejected on push</b>, so <code>None</code> coming out of <code>pop()</code> can only
+mean "empty".</li>
+<li><b><code>display()</code> returns a copy</b> (<code>list(self.__stack)</code>), not the internal list — a
+caller cannot reach in and mutate the stack.</li>
 </ul>
 
 <div class="card">
-<h3 style="margin-top:0">What a stress test found</h3>
-<p style="margin:0 0 10px">200 randomised sessions against a reference model produced <b>zero</b> wrong
-answers — push, pop, peek and isEmpty are all correct. Two limits remain:</p>
-<ul style="margin:0">
-<li><b>Ctrl-D crashes it.</b> End of input raises <code>EOFError</code> with a traceback instead of exiting
-cleanly.</li>
-<li><b>Output is O(n²).</b> The whole stack reprints on every loop, so 10,000 pushes emit about 250 MB of
-text and take ~17 seconds.</li>
-</ul>
+<h3 style="margin-top:0">How it was checked</h3>
+<p style="margin:0">800 randomised sessions of up to 40 operations — push, pop, peek, size, isEmpty and display
+— compared against a reference Python list: <b>zero</b> crashes and <b>zero</b> mismatches after the
+<code>peek()</code> guard was corrected.</p>
 </div>
 
 <h2><span class="bar"></span>6. GATE-style traps</h2>
