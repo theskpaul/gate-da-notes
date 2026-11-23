@@ -1,0 +1,131 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#9a6a1c"><title>BFS vs DFS — directed graph · GATE DA Notes</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/site.css?v=25"></head><body><script src="assets/speed.js?v=2" defer></script><div class="nav"><div class="in"><a class="brand" href="index.html#top">GATE DA · Notes</a><a class="lnk" href="index.html">Home</a><a class="lnk" href="index.html#index">Index</a><a class="lnk" href="progress.html">Progress</a><a class="lnk" href="coverage.html">Coverage</a><a class="lnk" href="calendar.html">Calendar</a><span class="sp"></span><a class="lnk" href="https://github.com/theskpaul/gate-da-notes">Repo</a></div></div><div class="wrap">
+<p class="crumb"><a href="index.html">Index</a> › Artificial Intelligence</p>
+<div class="hero"><span class="badge">DA-110 · Artificial Intelligence</span><h1>BFS vs DFS — directed graph</h1></div>
+<p class="lede" style="margin:-8px 0 26px">One directed graph, A to M, searched both ways. Start <b>A</b>,
+goals at <b>G</b> and <b>I</b>. Compare this with the
+<a href="comparison.html">undirected comparison</a> — different graph, and direction changes the answer.</p>
+
+<h2><span class="bar"></span>1. The graph</h2>
+<p><b>Edges:</b> A→B, A→C, A→D · B→E, B→F, B→G · C→H, C→I · D→J, D→K ·
+E→K, F→K, G→K · H→L · I→L, I→M · J→M · K→L · L→M</p>
+<p>Every arrow is one-way. Four edges point into K (D, E, F, G) and one leaves it (K→L) — that
+asymmetry is what direction adds to a graph.</p>
+
+<h2><span class="bar"></span>2. BFS — level by level</h2>
+<div class="tw"><table><thead><tr><th>Visit</th><th>Enqueue</th><th>Queue afterwards</th></tr></thead><tbody>
+<tr><td>A</td><td>B, C, D</td><td>B C D</td></tr>
+<tr><td>B</td><td>E, F, G</td><td>C D E F G</td></tr>
+<tr><td>C</td><td>H, I</td><td>D E F G H I</td></tr>
+<tr><td>D</td><td>J, K</td><td>E F G H I J K</td></tr>
+<tr><td>E</td><td>—</td><td>F G H I J K</td></tr>
+<tr><td>F</td><td>—</td><td>G H I J K</td></tr>
+<tr><td>G</td><td>—</td><td>H I J K</td></tr>
+<tr><td>H</td><td>L</td><td>I J K L</td></tr>
+<tr><td><b>I</b></td><td>M</td><td>J K L M — <b>stop</b></td></tr>
+</tbody></table></div>
+<p><b>Visited:</b> A B C D E F G H I · <b>path found:</b> A → C → I · <b>9 nodes</b></p>
+<div class="gp" data-graph="d-bfs"><div class="gp-stage"></div><div class="gp-bar">
+<button class="gp-play" type="button">Play</button><button class="gp-step" type="button">Step</button><button class="gp-reset" type="button">Reset</button><span class="spd" role="group" aria-label="Animation speed"><button class="spd-btn" type="button" data-speed="0.5">0.5&times;</button><button class="spd-btn is-on" type="button" data-speed="1">1&times;</button><button class="spd-btn" type="button" data-speed="2">2&times;</button><button class="spd-btn" type="button" data-speed="4">4&times;</button></span><p class="gp-caption"></p></div></div>
+<script type="application/json" id="d-bfs">{"id": "d-bfs", "directed": true, "width": 900, "height": 470, "speed": 1100, "alt": "Directed graph A to M, breadth first", "nodes": {"A": [450, 42], "B": [250, 142], "C": [430, 126], "D": [600, 116], "E": [140, 252], "F": [240, 256], "G": [330, 242], "H": [425, 252], "I": [525, 246], "J": [640, 242], "K": [230, 368], "L": [450, 372], "M": [625, 362]}, "edges": [["A", "B"], ["A", "C"], ["A", "D"], ["B", "E"], ["B", "F"], ["B", "G"], ["C", "H"], ["C", "I"], ["D", "J"], ["D", "K"], ["E", "K"], ["F", "K"], ["G", "K"], ["H", "L"], ["I", "L"], ["I", "M"], ["J", "M"], ["K", "L"], ["L", "M"]], "steps": [{"v": "A", "p": null, "t": "visit A (start) \u00b7 enqueue B, C, D."}, {"v": "B", "p": "A", "t": "visit B \u00b7 enqueue E, F, G."}, {"v": "C", "p": "A", "t": "visit C \u00b7 enqueue H, I."}, {"v": "D", "p": "A", "t": "visit D \u00b7 enqueue J, K."}, {"v": "E", "p": "B", "t": "visit E \u00b7 K is already queued, nothing new."}, {"v": "F", "p": "B", "t": "visit F \u00b7 K is already queued."}, {"v": "G", "p": "B", "t": "visit G \u2014 a goal, but BFS does not stop on the way past it."}, {"v": "H", "p": "C", "t": "visit H \u00b7 enqueue L."}, {"v": "I", "p": "C", "t": "visit I \u2014 GOAL. Stop."}]}</script>
+
+<h2><span class="bar"></span>3. DFS — dive first, backtrack later</h2>
+<div class="tw"><table><thead><tr><th>Visit</th><th>Push</th><th>Stack afterwards</th></tr></thead><tbody>
+<tr><td>A</td><td>D, C, B</td><td>D C <b>B</b></td></tr>
+<tr><td>B</td><td>G, F, E</td><td>D C G F <b>E</b></td></tr>
+<tr><td>E</td><td>K</td><td>D C G F <b>K</b></td></tr>
+<tr><td>K</td><td>L</td><td>D C G F <b>L</b></td></tr>
+<tr><td>L</td><td>M</td><td>D C G F <b>M</b></td></tr>
+<tr><td>M</td><td>—</td><td>D C G F — dead end, backtrack</td></tr>
+<tr><td>F</td><td>—</td><td>D C G — K already visited</td></tr>
+<tr><td>G</td><td>—</td><td>D C — K already visited</td></tr>
+<tr><td>C</td><td>I, H</td><td>D <b>I</b> H</td></tr>
+<tr><td>H</td><td>—</td><td>D I — L already visited</td></tr>
+<tr><td><b>I</b></td><td>—</td><td>D — <b>stop, goal</b></td></tr>
+</tbody></table></div>
+<p><b>Visited:</b> A B E K L M F G C H I · <b>path found:</b> A → C → I · <b>11 nodes</b></p>
+<div class="gp" data-graph="d-dfs"><div class="gp-stage"></div><div class="gp-bar">
+<button class="gp-play" type="button">Play</button><button class="gp-step" type="button">Step</button><button class="gp-reset" type="button">Reset</button><span class="spd" role="group" aria-label="Animation speed"><button class="spd-btn" type="button" data-speed="0.5">0.5&times;</button><button class="spd-btn is-on" type="button" data-speed="1">1&times;</button><button class="spd-btn" type="button" data-speed="2">2&times;</button><button class="spd-btn" type="button" data-speed="4">4&times;</button></span><p class="gp-caption"></p></div></div>
+<script type="application/json" id="d-dfs">{"id": "d-dfs", "directed": true, "width": 900, "height": 470, "speed": 1200, "alt": "Directed graph A to M, depth first", "nodes": {"A": [450, 42], "B": [250, 142], "C": [430, 126], "D": [600, 116], "E": [140, 252], "F": [240, 256], "G": [330, 242], "H": [425, 252], "I": [525, 246], "J": [640, 242], "K": [230, 368], "L": [450, 372], "M": [625, 362]}, "edges": [["A", "B"], ["A", "C"], ["A", "D"], ["B", "E"], ["B", "F"], ["B", "G"], ["C", "H"], ["C", "I"], ["D", "J"], ["D", "K"], ["E", "K"], ["F", "K"], ["G", "K"], ["H", "L"], ["I", "L"], ["I", "M"], ["J", "M"], ["K", "L"], ["L", "M"]], "steps": [{"v": "A", "p": null, "t": "visit A \u00b7 push D, C, B so that B ends up on top."}, {"v": "B", "p": "A", "t": "visit B \u00b7 push G, F, E so that E is on top."}, {"v": "E", "p": "B", "t": "visit E \u00b7 push K."}, {"v": "K", "p": "E", "t": "visit K \u00b7 push L."}, {"v": "L", "p": "K", "t": "visit L \u00b7 push M."}, {"v": "M", "p": "L", "t": "visit M \u2014 no children. Dead end, so backtrack."}, {"v": "F", "p": "B", "t": "back at F \u00b7 K is already visited, so nothing to push. Dead end."}, {"v": "G", "p": "B", "t": "back at G \u00b7 K is already visited. Dead end."}, {"v": "C", "p": "A", "t": "back at C \u00b7 push I, H so that H is on top."}, {"v": "H", "p": "C", "t": "visit H \u00b7 L is already visited. Dead end."}, {"v": "I", "p": "C", "t": "visit I \u2014 GOAL. Stop."}]}</script>
+
+<h2><span class="bar"></span>4. Side by side</h2>
+<div class="tw"><table><thead><tr><th></th><th>BFS</th><th>DFS</th></tr></thead><tbody>
+<tr><td>Data structure</td><td>Queue — FIFO</td><td>Stack — LIFO</td></tr>
+<tr><td>Visit order</td><td>A B C D E F G H I</td><td>A B E K L M F G C H I</td></tr>
+<tr><td>Nodes expanded</td><td>9</td><td>11</td></tr>
+<tr><td>Path found</td><td>A → C → I</td><td>A → C → I</td></tr>
+<tr><td>Shortest in edges?</td><td><b>Yes, guaranteed</b></td><td>No guarantee — it got lucky here</td></tr>
+<tr><td>Complete?</td><td>Yes, on a finite graph</td><td>Yes here, because visited nodes are tracked</td></tr>
+</tbody></table></div>
+
+<div class="card accent">
+<h3 style="margin-top:0">Your page stops at M and says "Goal Not found!" — that part is not right</h3>
+<p>Your BFS trace matches exactly: A B C D E F G H I, stopping at I. Good.</p>
+<p>Your DFS trace reaches A → B → E → K → L → M and then stops, declaring the goal not found. But
+<b>M is not the end of the search</b> — it is only the end of one <i>branch</i>. The stack at that moment
+still holds <b>D, C, G and F</b>, none of them visited. DFS must pop them and keep going.</p>
+<p>Continuing from M: F and G are dead ends (K is already visited), then <b>C</b> is popped, and C has a
+child <b>I</b> — which is a goal. So the real DFS visit order is
+<b>A B E K L M F G C H I</b> and it <b>does</b> find the goal, by the same path BFS found.</p>
+<p style="margin:0">The lesson to keep: <b>a dead end is not a finished search.</b> DFS only ends when the
+stack is empty or a goal is popped.</p>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">"But the arrows point one way — how can it go back?"</h3>
+<p>This is the most common misunderstanding about directed DFS, and it is worth being precise about.</p>
+<p><b>Backtracking is not walking back along an edge.</b> It is a <i>stack operation</i>. When a node has no
+unvisited outgoing edge, the algorithm simply pops the stack and resumes at whatever node is on top. Nothing
+is traversed backwards — the arrows are never violated.</p>
+<p>Look at the stack at the moment M is visited: it still holds <b>D, C, G and F</b>. Those nodes were
+<b>pushed</b> on the way down, and they are still waiting. Popping F is not following an edge from M — F was
+already in the to-do list.</p>
+<div class="tw"><table><thead><tr><th>pop</th><th>visit</th><th>push</th><th>stack</th></tr></thead><tbody>
+<tr><td>A</td><td>A</td><td>D, C, B</td><td>D C B</td></tr>
+<tr><td>B</td><td>B</td><td>G, F, E</td><td>D C G F E</td></tr>
+<tr><td>E</td><td>E</td><td>K</td><td>D C G F K</td></tr>
+<tr><td>K</td><td>K</td><td>L</td><td>D C G F L</td></tr>
+<tr><td>L</td><td>L</td><td>M</td><td>D C G F M</td></tr>
+<tr><td>M</td><td>M</td><td>—</td><td>D C G F &nbsp;← dead end</td></tr>
+<tr><td>F</td><td>F</td><td>—</td><td>D C G</td></tr>
+<tr><td>G</td><td>G</td><td>—</td><td>D C</td></tr>
+<tr><td>C</td><td>C</td><td>I, H</td><td>D I H</td></tr>
+<tr><td>H</td><td>H</td><td>—</td><td>D I</td></tr>
+<tr><td>I</td><td>I</td><td>—</td><td>D &nbsp;← goal</td></tr>
+</tbody></table></div>
+<p><b>The test:</b> take a graph <code>A→B</code>, <code>A→C</code>, <code>C→GOAL</code>, where B is a dead
+end. If a one-way edge made backtracking impossible, DFS would stop at B and never find GOAL. It does find
+it — visits A → B → C → GOAL — because after B it pops C, a node it had pushed. Direction restricts where you
+can <i>discover</i> nodes; it does not restrict where the algorithm can <i>return</i> to.</p>
+<p style="margin:0">What would genuinely stop a search is the frontier running out — an empty stack — not a
+leaf.</p>
+</div>
+
+<h2><span class="bar"></span>5. Why they disagree on order but agree on the path</h2>
+<ul>
+<li><b>BFS expands everything at depth 1, then depth 2.</b> It reaches I as soon as C is expanded, having
+already looked at B and D. That is why it expands only 9 nodes.</li>
+<li><b>DFS follows one branch to the bottom.</b> A → B → E → K → L → M is four edges deep before it turns
+around, so it expands 11 nodes to reach the same goal.</li>
+<li><b>Both found A → C → I</b> because that is the only path to a goal in this graph — C is the only node
+with an edge to I.</li>
+<li><b>Direction matters.</b> In the undirected version of a graph like this, DFS could have walked back up
+edges. Here it cannot: K→L exists but L→K does not, so once past L the search can only go forward.</li>
+</ul>
+
+<h2><span class="bar"></span>6. GATE-style traps</h2>
+<ul>
+<li><b>Mark visited on enqueue/push, not on dequeue/pop</b> — otherwise K enters the queue three times, once
+from each of E, F and G.</li>
+<li><b>Push children in reverse</b> if you want them explored in alphabetical order. That is why A pushes
+D, C, B: B ends up on top.</li>
+<li><b>DFS is not optimal.</b> Here it happened to find the two-edge path, but on a graph with a longer
+branch leading to a goal it would return that longer path.</li>
+<li><b>BFS costs memory, DFS costs depth.</b> BFS holds the whole frontier; DFS holds one path plus siblings.</li>
+<li><b>"Goal not found" must mean the stack or queue is empty</b>, never "I reached a leaf".</li>
+</ul>
+<footer><span>GATE DA · Feb 2027</span><span class="sp"></span><a href="index.html">Index</a><a href="progress.html">Progress</a><a href="calendar.html">Calendar</a><a href="coverage.html">Coverage</a><a href="https://github.com/theskpaul/gate-da-notes">Source</a></footer></div><script src="assets/player.js?v=6" defer></script><script src="assets/calendar.js?v=3" defer></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true,theme:window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});
+</script>
+<script src="assets/urgency.js?v=9" defer></script></body></html>

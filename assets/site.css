@@ -548,3 +548,8 @@ pre,code,pre code{font-family:var(--font-mono)}
   .tok-bi{color:#7fb6f0}
   .tok-dec{color:#e0ad4a}
 }
+
+/* directed graph edges */
+.gp-arrowhead{fill:var(--line-strong);transition:fill .25s ease}
+.gp-edge.done{stroke:var(--accent)}
+line.gp-edge.done + *{stroke:var(--accent)}

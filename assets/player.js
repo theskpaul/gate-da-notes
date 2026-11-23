@@ -18,15 +18,37 @@
     svg.appendChild(edgeLayer);
     svg.appendChild(nodeLayer);
 
+    /* directed graphs get arrowheads, trimmed back to the circle edge */
+    var arrowId = null;
+    if (spec.directed) {
+      arrowId = "arw-" + (spec.id || Math.random().toString(36).slice(2, 8));
+      var defs = el("defs", {});
+      [["", "var(--line-strong)"], ["-on", "var(--accent)"]].forEach(function (pair) {
+        var mk = el("marker", { id: arrowId + pair[0], markerWidth: "9", markerHeight: "9",
+                                refX: "7", refY: "3.2", orient: "auto",
+                                markerUnits: "userSpaceOnUse" });
+        mk.appendChild(el("path", { d: "M0,0 L7,3.2 L0,6.4 z", style: "fill:" + pair[1] }));
+        defs.appendChild(mk);
+      });
+      svg.appendChild(defs);
+    }
+
     var nodeEls = {}, edgeEls = {};
 
     spec.edges.forEach(function (e) {
       var a = e[0], b = e[1];
       var pa = spec.nodes[a], pb = spec.nodes[b];
-      var ln = el("line", { x1: pa[0], y1: pa[1], x2: pb[0], y2: pb[1], class: "gp-edge" });
+      var ax = pa[0], ay = pa[1], bx = pb[0], by = pb[1];
+      if (arrowId) {
+        var dx = bx - ax, dy = by - ay, len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var ux = dx / len, uy = dy / len, R = 19;
+        ax += ux * R; ay += uy * R; bx -= ux * R; by -= uy * R;
+      }
+      var ln = el("line", { x1: ax, y1: ay, x2: bx, y2: by, class: "gp-edge" });
+      if (arrowId) ln.setAttribute("marker-end", "url(#" + arrowId + ")");
       edgeLayer.appendChild(ln);
       edgeEls[a + "|" + b] = ln;
-      edgeEls[b + "|" + a] = ln;
+      if (!spec.directed) edgeEls[b + "|" + a] = ln;
     });
 
     Object.keys(spec.nodes).forEach(function (id) {
@@ -68,6 +90,14 @@
           var pe = edgeEls[st.p + "|" + st.v];
           if (pe) pe.classList.add("done");
         }
+      }
+      if (arrowId) {
+        spec.edges.forEach(function (e) {
+          var ln = edgeEls[e[0] + "|" + e[1]];
+          if (!ln) return;
+          ln.setAttribute("marker-end", "url(#" + arrowId +
+            (ln.classList.contains("done") ? "-on" : "") + ")");
+        });
       }
 
       caption.textContent = i < 0
