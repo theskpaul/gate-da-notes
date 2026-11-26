@@ -30,6 +30,7 @@ what gets served. Edit a file, commit, push — GitHub Pages rebuilds automatica
 *.html                 one file per page, all self-contained
 assets/site.css        the entire design system, one stylesheet
 assets/urgency.js      top banner, live counters, pace-vs-needed, next-up
+assets/pyq.js          the PYQ tracker — single source of truth for progress
 assets/flip.js         home page only: page-flip scroll + banner show/hide
 assets/player.js       graph traversal animation (BFS / DFS)
 assets/listplayer.js   linked-list animation
@@ -77,23 +78,25 @@ Then, in order:
 1. **Add the page to `index.html`** — under the right section card, as
    `<li class="has"><span class="dot"></span><span><a href="new.html">Title</a></span></li>`
 2. **Update the section's page count** in that same card: `16 topics · 3 covered · 4 pages`.
-3. **Update `progress.html`** if a *new topic* gained notes — change the row's pill to `Notes`, link it, and
-   bump that section's `— n of m` header.
+3. **Link the note from `progress.html`** — make the topic's `<td>` a link to the new page. Do **not** change
+   its status pill: that now tracks PYQs, not notes (see “Progress” below).
 4. **Add a `calendar.html` event** for today with the page link.
 5. **Link the original photos** at the bottom of the page (`assets/img/…`) so the transcription can be
    checked against the handwriting.
 
-## Counts — the one thing that bites
+## Progress = PYQs solved (the one thing to know)
 
-The topic numbers are **not** in one place. They live in:
+Progress is **not** notes. A topic counts as done only when its previous-year questions are solved. The
+single source of truth is `assets/pyq.js` → `window.PYQ` (a `total` and a `done: []` array per section).
 
-- `assets/urgency.js` — `TOTAL`, `COVERED` (defaults, overridden by page attributes)
-- `index.html` — `data-total` / `data-covered` on the landing, plus the per-section card text
-- `coverage.html` — `data-total` / `data-covered`, the by-section table, the "most remaining" list
-- `progress.html` — the intro line (`n of 105 topics have notes`) and each section header
-
-Change a topic count and you must change all of them, or the pages will contradict each other. This has
-already happened once.
+- `assets/pyq.js` — the only place to edit. To mark a topic solved, add its `data-key` (from `progress.html`)
+  to that section's `done` array, e.g. `done: ["sec-2-matrices"]`.
+- `assets/urgency.js` — reads `window.PYQ` for the global bar, banner, pace and next-up.
+- `assets/pyq.js` also renders every per-section number: the `[data-sec]` blocks in `index.html` (cards),
+  `progress.html` (section headers) and `coverage.html` (table rows), plus the `tr[data-key]` status pills.
+- Numbers written in the HTML are no-JS fallbacks only — do not hand-edit them; they are recomputed from
+  `window.PYQ` on load.
+- `pyq.js` must load **before** `urgency.js` on every page. Both are `defer`, so source order decides.
 
 ## Cache-busting — mandatory
 

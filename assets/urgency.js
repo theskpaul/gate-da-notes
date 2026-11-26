@@ -1,12 +1,12 @@
 /* Urgency layer: top banner, live counters, pace-vs-needed, next-up.
-   Constants live here — update COVERED when a new topic gets a note. */
+   Progress = PYQs solved, read from assets/pyq.js (window.PYQ). */
 (function () {
   /* defaults; any [data-exam]/[data-total]/[data-covered] on the page overrides them */
   var cfg = document.querySelector("[data-exam]");
   var EXAM = (cfg && cfg.dataset.exam) || "2027-02-06";
   var START = (cfg && cfg.dataset.start) || "2026-10-23";
-  var TOTAL = (cfg && parseInt(cfg.dataset.total, 10)) || 105;
-  var COVERED = (cfg && parseInt(cfg.dataset.covered, 10)) || 5;
+  var TOTAL = (window.PYQ && window.PYQ.total) || (cfg && parseInt(cfg.dataset.total, 10)) || 105;
+  var COVERED = (window.PYQ && window.PYQ.count) ? window.PYQ.count() : ((cfg && parseInt(cfg.dataset.covered, 10)) || 0);
   /* Syllabus finish line, leaving a revision buffer before the exam window.
      Exam opens 6 Feb 2027; finish by 9 Jan 2027 = 28-day buffer. */
   var FINISH = (cfg && cfg.dataset.finish) || "2027-01-09";
@@ -62,7 +62,7 @@
   banner.innerHTML =
     '<span><b class="clock" data-out="clock">—</b> left</span>' +
     '<span class="u">·</span>' +
-    "<span><b>" + left + "</b> topics untouched</span>" +
+    "<span><b>" + left + "</b> topics without PYQs</span>" +
     '<span class="u">·</span>' +
     "<span>finish by <b>" + finishLabel + "</b></span>" +
     '<span class="u">·</span>' +
@@ -139,17 +139,26 @@
 
   /* ---- next-up: the biggest untouched section ---- */
   var nu = document.getElementById("next-up");
-  if (nu && nu.dataset.sections) {
-    try {
-      var secs = JSON.parse(nu.dataset.sections);
+  if (nu) {
+    var secs = null;
+    if (window.PYQ && window.PYQ.sections) {
+      secs = window.PYQ.sections.map(function (s) {
+        return { name: s.name, total: s.total, left: s.total - s.done.length };
+      });
+    } else if (nu.dataset.sections) {
+      try { secs = JSON.parse(nu.dataset.sections); } catch (e) { secs = null; }
+    }
+    if (secs) {
       var best = null;
       secs.forEach(function (s) { if (s.left > 0 && (!best || s.left > best.left)) best = s; });
       if (best) {
-        nu.querySelector("[data-out=\"nu-name\"]").textContent = best.name;
-        nu.querySelector("[data-out=\"nu-count\"]").textContent = best.left + " of " + best.total;
+        var elN = nu.querySelector("[data-out=\"nu-name\"]");
+        var elC = nu.querySelector("[data-out=\"nu-count\"]");
+        if (elN) elN.textContent = best.name;
+        if (elC) elC.textContent = best.left + " of " + best.total;
         var a = nu.querySelector("a");
         if (a) a.href = "coverage.html";
       }
-    } catch (e) { /* leave the static fallback in place */ }
+    }
   }
 })();
