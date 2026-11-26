@@ -6,7 +6,7 @@
  *
  * TO MARK A TOPIC DONE: add its key to that section's `done` array below.
  * The keys are the data-key values on progress.html
- * (e.g. "sec-2-matrices-determinants").
+ * (e.g. "sec-2-matrices").
  * Every page — home bar, progress tracker, coverage — reads this one file.
  */
 (function () {
@@ -42,8 +42,8 @@
 
   window.PYQ = PYQ;
 
-  function render() {
-    /* per-section number + bar + status, wherever a [data-sec] block exists */
+  /* per-section number + bar + status, wherever a [data-sec] block exists */
+  function renderSections() {
     var blocks = document.querySelectorAll("[data-sec]");
     for (var i = 0; i < blocks.length; i++) {
       var sec = PYQ.byId(blocks[i].getAttribute("data-sec"));
@@ -62,7 +62,10 @@
         stat.className = d > 0 ? "pill ok cstat" : "pill cstat";
       }
     }
-    /* progress.html topic rows */
+  }
+
+  /* progress.html topic rows */
+  function renderRows() {
     var rows = document.querySelectorAll("tr[data-key]");
     for (var j = 0; j < rows.length; j++) {
       var key = rows[j].getAttribute("data-key");
@@ -73,6 +76,46 @@
       pill.className = done ? "pill ok" : "pill";
       pill.setAttribute("data-pyq", done ? "yes" : "no");
     }
+  }
+
+  /* optional "show only what's left" filter on progress.html */
+  function applyFilter() {
+    var table = document.querySelector("table");
+    if (!table || !table.tBodies.length) return;
+    var cb = document.getElementById("only-left");
+    var only = !!(cb && cb.checked);
+    var rows = table.tBodies[0].rows;
+    var header = null, group = [];
+    function flush() {
+      if (!header) return;
+      var vis = 0;
+      for (var k = 0; k < group.length; k++) if (group[k].style.display !== "none") vis++;
+      header.style.display = (only && vis === 0) ? "none" : "";
+    }
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      if (r.hasAttribute("data-sec")) {
+        flush(); header = r; group = [];
+      } else if (r.hasAttribute("data-key")) {
+        var done = r.querySelector('.pill[data-pyq="yes"]');
+        r.style.display = (only && done) ? "none" : "";
+        group.push(r);
+      }
+    }
+    flush();
+    var note = document.getElementById("only-left-count");
+    if (note) {
+      var left = PYQ.total - PYQ.count();
+      note.textContent = only ? ("Showing " + left + " of " + PYQ.total + " still to do") : "";
+    }
+  }
+
+  function render() {
+    renderSections();
+    renderRows();
+    var cb = document.getElementById("only-left");
+    if (cb && !cb.__wired) { cb.__wired = true; cb.addEventListener("change", applyFilter); }
+    applyFilter();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render);
