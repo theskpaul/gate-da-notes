@@ -16,7 +16,7 @@
       { id: "sec-1", name: "Probability & Statistics",                 total: 17, done: [] },
       { id: "sec-2", name: "Linear Algebra",                            total: 17, done: [] },
       { id: "sec-3", name: "Calculus & Optimization",                   total:  6, done: [] },
-      { id: "sec-4", name: "Programming, Data Structures & Algorithms", total: 16, done: [] },
+      { id: "sec-4", name: "Programming, Data Structures & Algorithms", total: 16, done: ["sec-4-linked-lists", "sec-4-stacks", "sec-4-queues"] },
       { id: "sec-5", name: "Database Management & Warehousing",         total: 17, done: [] },
       { id: "sec-6", name: "Machine Learning",                          total: 20, done: [] },
       { id: "sec-7", name: "Artificial Intelligence",                   total:  8, done: [] },
